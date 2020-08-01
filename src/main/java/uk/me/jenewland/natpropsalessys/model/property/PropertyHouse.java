@@ -1,4 +1,4 @@
-package main.java.uk.me.jenewland.natpropsalessys.model.property;
+package uk.me.jenewland.natpropsalessys.model.property;
 
 import java.io.Serializable;
 

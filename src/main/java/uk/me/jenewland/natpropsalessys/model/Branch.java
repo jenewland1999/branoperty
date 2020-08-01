@@ -1,7 +1,7 @@
-package main.java.uk.me.jenewland.natpropsalessys.model;
+package uk.me.jenewland.natpropsalessys.model;
 
-import main.java.uk.me.jenewland.natpropsalessys.model.property.Property;
-import main.java.uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
+import uk.me.jenewland.natpropsalessys.model.property.Property;
+import uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package main.java.uk.me.jenewland.natpropsalessys.model.user;
+package uk.me.jenewland.natpropsalessys.model.user;
 
 import java.io.Serializable;
 import java.util.Date;
