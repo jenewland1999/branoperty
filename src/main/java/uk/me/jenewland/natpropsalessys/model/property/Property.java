@@ -1,8 +1,10 @@
 package uk.me.jenewland.natpropsalessys.model.property;
 
+import uk.me.jenewland.natpropsalessys.model.IModel;
+
 import java.io.Serializable;
 
-public class Property implements Serializable
+public class Property implements Serializable, IModel
 {
     protected String address;
     protected int noOfRooms;
@@ -14,7 +16,7 @@ public class Property implements Serializable
         this.address = "";
         this.noOfRooms = 0;
         this.sellingPrice = 0;
-        this.soldPrice = 0;
+        this.soldPrice = -1;
     }
 
     public Property(String address, int noOfRooms, int sellingPrice, int soldPrice)
@@ -64,4 +66,6 @@ public class Property implements Serializable
     {
         this.soldPrice = soldPrice;
     }
+
+    public boolean isSold() { return this.soldPrice >= 0; }
 }

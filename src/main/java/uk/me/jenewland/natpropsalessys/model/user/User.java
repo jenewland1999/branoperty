@@ -1,9 +1,11 @@
 package uk.me.jenewland.natpropsalessys.model.user;
 
+import uk.me.jenewland.natpropsalessys.model.IModel;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable
+public class User implements Serializable, IModel
 {
     protected String username = "";
     protected String password = ""; // TODO: HASH+SALT ME LATER

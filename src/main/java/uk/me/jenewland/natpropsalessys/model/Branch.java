@@ -6,7 +6,7 @@ import uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Branch implements Serializable
+public class Branch implements Serializable, IModel
 {
     private String name = "";
     private String address = "";

@@ -47,8 +47,7 @@ public class FileHandler
 
             OIS.close();
         } catch (EOFException e) {
-            LOGGER.log(Level.INFO, "Reached the end of the file.");
-            LOGGER.log(Level.INFO, String.format("Retrieved %s objects from file", objects.size()));
+            LOGGER.log(Level.INFO, String.format("EOF Reached. Retrieved %s objects from file", objects.size()));
         } catch (ClassNotFoundException e) {
             LOGGER.log(Level.SEVERE, "The class being read is unavailable.");
         } catch (FileNotFoundException e) {

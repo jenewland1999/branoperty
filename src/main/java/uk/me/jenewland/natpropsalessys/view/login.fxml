@@ -20,7 +20,7 @@
                         <PasswordField fx:id="pfBranchPassword" layoutX="220.0" layoutY="195.0" promptText="Password" />
                         <Label fx:id="lblBranchUsername" layoutX="220.0" layoutY="109.0" text="Username" />
                         <Label fx:id="lblBranchPassword" layoutX="220.0" layoutY="170.0" text="Password" />
-                        <Button fx:id="btnBranchLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="159.0" text="Login" textAlignment="CENTER" />
+                        <Button fx:id="btnBranchLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER" />
                      </children>
                   </AnchorPane>
             </content>
@@ -33,7 +33,7 @@
                         <PasswordField fx:id="pfAdminPassword" layoutX="220.0" layoutY="195.0" promptText="Password" />
                         <Label fx:id="lblAdminUsername" layoutX="220.0" layoutY="109.0" text="Username" />
                         <Label fx:id="lblAdminPassword" layoutX="220.0" layoutY="170.0" text="Password" />
-                        <Button fx:id="btnAdminLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="159.0" text="Login" textAlignment="CENTER" />
+                        <Button fx:id="btnAdminLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER" />
                      </children>
                   </AnchorPane>
                </content>
