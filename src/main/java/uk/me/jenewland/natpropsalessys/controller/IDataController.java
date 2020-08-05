@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IDataController {
   void create(IModel model);
+  IModel read(String key);
   List<IModel> readAll();
   void update(IModel model);
   void delete(IModel model);
