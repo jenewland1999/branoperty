@@ -1,21 +1,18 @@
 package uk.me.jenewland.natpropsalessys.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import uk.me.jenewland.natpropsalessys.Main;
 import uk.me.jenewland.natpropsalessys.NatPropSalesSys;
 import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ControllerMain
+public class ControllerLogin
 {
     @FXML
     private Tab tabAdminLogin;
@@ -75,8 +72,6 @@ public class ControllerMain
                 return userAdminUsername.equalsIgnoreCase(username) && userAdminPassword.equals(password);
             }
         }
-
-
 
         return false;
     }
