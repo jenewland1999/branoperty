@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.controller.BranchDataController;
+import uk.me.jenewland.natpropsalessys.controller.DataController;
 import uk.me.jenewland.natpropsalessys.model.Branch;
-import uk.me.jenewland.natpropsalessys.model.IModel;
+import uk.me.jenewland.natpropsalessys.model.property.Property;
+import uk.me.jenewland.natpropsalessys.model.property.PropertyFlat;
+import uk.me.jenewland.natpropsalessys.model.property.PropertyHouse;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,16 +35,25 @@ public class Main extends Application {
     public static void main(String[] args) throws IOException {
         // Create the branches directory if it doesn't already exist
         Files.createDirectories(Paths.get("repositories" + File.separator + "branches"));
+        Files.createDirectories(Paths.get("repositories" + File.separator + "properties"));
 
-        BranchDataController branchDataController = new BranchDataController(Paths.get("repositories" + File.separator + "branches"));
-        branchDataController.create(new Branch("weymouth", "password", "", "", "", 7802684152L));
+        DataController branchDC = new DataController(Paths.get("repositories" + File.separator + "branches"));
+        DataController propertyDC = new DataController(Paths.get("repositories" + File.separator + "properties"));
+        branchDC.create(new Branch("weymouth", "password", "", "", "", 7802684152L));
+        propertyDC.create(new PropertyHouse("14 Gentian Way, Weymouth, Dorset, DT3 6FH", 3, 250000, -1, 2, true, true));
 
-        Branch model = (Branch) branchDataController.read("weymouth");
-//        System.out.println(model.getTel());
+        Branch model = (Branch) branchDC.read("weymouth");
+        Property model2 = (PropertyHouse) propertyDC.read("14 Gentian Way, Weymouth, Dorset, DT3 6FH");
+        System.out.println(model2.getAddress());
+        System.out.println(model.getName());
 
-        branchDataController.delete(model);
+        branchDC.delete(model);
+        propertyDC.update(model2, new PropertyFlat("4 Radley Court", 2, 120000, 100000, 0, 750));
+        model2 = (PropertyFlat) propertyDC.read("4 Radley Court");
+        System.out.println(((PropertyFlat) model2).getMonthlyCharge());
+
 
         // Launch the application
-//        launch(args);
+        launch(args);
     }
 }

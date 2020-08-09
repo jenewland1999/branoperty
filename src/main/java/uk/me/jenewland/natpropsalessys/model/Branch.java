@@ -4,10 +4,8 @@ import uk.me.jenewland.natpropsalessys.model.property.Property;
 import uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class Branch implements Serializable, IModel
 {
@@ -108,6 +106,6 @@ public class Branch implements Serializable, IModel
 
     @Override
     public String toString() {
-        return getName();
+        return Integer.toString(getName().hashCode());
     }
 }

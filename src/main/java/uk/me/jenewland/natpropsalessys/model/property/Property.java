@@ -72,6 +72,6 @@ public class Property implements Serializable, IModel
 
     @Override
     public String toString() {
-        return UUID.fromString(getAddress()).toString();
+        return Integer.toString(getAddress().hashCode());
     }
 }

@@ -1,44 +1,35 @@
 package uk.me.jenewland.natpropsalessys.controller;
 
-import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
-import java.io.*;
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 
 import static uk.me.jenewland.natpropsalessys.NatPropSalesSys.LOGGER;
 
-public class BranchDataController implements IDataController {
+public class DataController {
   private final Path PATH;
 
-  public BranchDataController(Path path) {
-    this.PATH = path;
+  public DataController(Path path) {
+    PATH = path;
   }
 
-  @Override
   public void create(IModel model) {
-    if (!(model instanceof Branch)) {
-      return;
-    }
-
-    Branch branch = (Branch) model;
-
-    FileHandler.writeObjsToFile(String.valueOf(PATH.resolve(branch.getName())), model);
+    FileHandler.writeObjsToFile(String.valueOf(PATH.resolve(model.toString()) + ".dat"), model);
   }
 
-  @Override
   public IModel read(String key) {
-    return (IModel) FileHandler.readObjFromFile(String.valueOf(PATH.resolve(key)));
+    return (IModel) FileHandler.readObjFromFile(String.valueOf(PATH.resolve(key.hashCode() + ".dat")));
   }
 
-  @Override
   public Collection<IModel> readAll() {
     File dir = Paths.get(PATH.toString()).toFile();
     File[] files = dir.listFiles();
@@ -56,13 +47,11 @@ public class BranchDataController implements IDataController {
     return list;
   }
 
-  @Override
   public void update(IModel oldModel, IModel newModel) {
     delete(oldModel);
     create(newModel);
   }
 
-  @Override
   public void delete(IModel model) {
     File dir = Paths.get(PATH.toString()).toFile();
     File[] files = dir.listFiles();
@@ -72,17 +61,27 @@ public class BranchDataController implements IDataController {
     }
 
     for (File file : files) {
-      IModel modelFromFile = (IModel) FileHandler.readObjFromFile(PATH.toString() + File.separator + file.getName());
+      IModel modelFromFile = (IModel) FileHandler.readObjFromFile(
+              PATH.toString() + File.separator + file.getName()
+      );
 
       if (modelFromFile == null) {
-        return;
+        continue;
       }
 
-      if (file.getName().equals(model.toString())) {
-        if (file.delete()) {
-          System.out.println("Deleted");
-        } else {
-          System.out.println("Not deleted.");
+      if (file.getName().equals(model.toString() + ".dat")) {
+        try {
+          Files.deleteIfExists(Paths.get(PATH.toString() + File.separator + file.getName()));
+          LOGGER.log(Level.INFO, String.format("The file %s was deleted successfully.",
+                  PATH.toString() + File.separator + file.getName()
+          ));
+        } catch (IOException e) {
+          LOGGER.log(Level.SEVERE, String.format(
+                  "The file %s was not deleted for one reason or another. " +
+                          "This is a known issue on Microsoft Windows. %n%s",
+                  PATH.toString() + File.separator + file.getName(),
+                  Arrays.toString(e.getStackTrace())
+          ));
         }
       }
     }
