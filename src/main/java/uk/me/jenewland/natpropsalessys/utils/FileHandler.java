@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,13 +30,14 @@ public class FileHandler
 
             oos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Unexpected IO Error");
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 
-    public static ArrayList<Object> readObjsFromFile(String filename)
+    public static List<Object> readObjsFromFile(String filename)
     {
-        ArrayList<Object> objects = new ArrayList<>();
+        List<Object> objects = new ArrayList<>();
 
         try {
             final ObjectInputStream OIS = new ObjectInputStream(new FileInputStream(filename));
@@ -58,5 +60,16 @@ public class FileHandler
         }
 
         return objects;
+    }
+
+    public static Object readObjFromFile(String filename)
+    {
+        List<Object> objects = readObjsFromFile(filename);
+
+        if (objects.size() > 0) {
+            return objects.get(0);
+        }
+
+        return null;
     }
 }

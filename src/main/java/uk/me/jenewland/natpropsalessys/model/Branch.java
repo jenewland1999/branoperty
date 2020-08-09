@@ -5,6 +5,9 @@ import uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class Branch implements Serializable, IModel
 {
@@ -12,24 +15,25 @@ public class Branch implements Serializable, IModel
     private String address = "";
     private String email = "";
     private String website = "";
-    private int tel = 0;
-    private UserSecretary branchSecretary = new UserSecretary(this.name, "password");
-    private ArrayList<Property> properties = new ArrayList<>();
+    private long tel = 0;
+    private UserSecretary branchSecretary = new UserSecretary();
+    private Set<Property> properties = new HashSet<>();
 
     public Branch()
     {
 
     }
 
-    public Branch(String name, String address, String email, String website, int tel, UserSecretary branchSecretary, ArrayList<Property> properties)
+    public Branch(String name, String password, String address, String email, String website, long tel)
     {
         this.name = name;
         this.address = address;
         this.email = email;
         this.website = website;
         this.tel = tel;
-        this.branchSecretary = branchSecretary;
-        this.properties = new ArrayList<>(properties);
+        this.branchSecretary.setUsername(name);
+        this.branchSecretary.setPassword(password);
+        this.properties = new HashSet<>(properties);
     }
 
     public String getName()
@@ -72,12 +76,12 @@ public class Branch implements Serializable, IModel
         this.website = website;
     }
 
-    public int getTel()
+    public long getTel()
     {
         return tel;
     }
 
-    public void setTel(int tel)
+    public void setTel(long tel)
     {
         this.tel = tel;
     }
@@ -92,13 +96,18 @@ public class Branch implements Serializable, IModel
         this.branchSecretary = branchSecretary;
     }
 
-    public ArrayList<Property> getProperties()
+    public Set<Property> getProperties()
     {
         return properties;
     }
 
-    public void setProperties(ArrayList<Property> properties)
+    public void setProperties(Set<Property> properties)
     {
         this.properties = properties;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

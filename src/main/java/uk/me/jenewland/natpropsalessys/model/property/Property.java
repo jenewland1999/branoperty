@@ -3,6 +3,7 @@ package uk.me.jenewland.natpropsalessys.model.property;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Property implements Serializable, IModel
 {
@@ -68,4 +69,9 @@ public class Property implements Serializable, IModel
     }
 
     public boolean isSold() { return this.soldPrice >= 0; }
+
+    @Override
+    public String toString() {
+        return UUID.fromString(getAddress()).toString();
+    }
 }

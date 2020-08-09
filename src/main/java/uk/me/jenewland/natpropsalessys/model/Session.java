@@ -3,26 +3,26 @@ package uk.me.jenewland.natpropsalessys.model;
 import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
 
 public class Session {
-  private UserAdmin userAdmin;
+  private UserAdmin admin;
   private Branch branch;
 
-  public UserAdmin getUserAdmin() {
-    return userAdmin;
+  public Session(UserAdmin admin) {
+    this.admin = admin;
   }
 
-  public void setUserAdmin(UserAdmin userAdmin) {
-    this.userAdmin = userAdmin;
+  public Session(Branch branch) {
+    this.branch = branch;
+  }
+
+  public UserAdmin getUserAdmin() {
+    return admin;
   }
 
   public Branch getBranch() {
     return branch;
   }
 
-  public void setBranch(Branch branch) {
-    this.branch = branch;
-  }
-
   public boolean isAdmin() {
-    return branch != null;
+    return branch == null;
   }
 }

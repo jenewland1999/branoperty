@@ -4,6 +4,7 @@ import uk.me.jenewland.natpropsalessys.model.IModel;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 public class User implements Serializable, IModel
 {
@@ -50,5 +51,10 @@ public class User implements Serializable, IModel
     public void setDateCreated(Date dateCreated)
     {
         this.dateCreated = dateCreated;
+    }
+
+    @Override
+    public String toString() {
+        return UUID.fromString(getUsername()).toString();
     }
 }
