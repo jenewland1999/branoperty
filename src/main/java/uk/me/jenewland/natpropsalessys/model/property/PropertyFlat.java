@@ -1,5 +1,7 @@
 package uk.me.jenewland.natpropsalessys.model.property;
 
+import uk.me.jenewland.natpropsalessys.model.Branch;
+
 import java.io.Serializable;
 
 public class PropertyFlat extends Property implements Serializable
@@ -9,12 +11,12 @@ public class PropertyFlat extends Property implements Serializable
 
     public PropertyFlat()
     {
-        super("", 0, 0, 0);
+        super();
     }
 
-    public PropertyFlat(String address, int noOfRooms, int sellingPrice, int soldPrice, int floorNo, int monthlyCharge)
+    public PropertyFlat(Branch branch, String address, int noOfRooms, int sellingPrice, int soldPrice, int floorNo, int monthlyCharge, TYPES type)
     {
-        super(address, noOfRooms, sellingPrice, soldPrice);
+        super(branch, address, noOfRooms, sellingPrice, soldPrice, type);
         this.floorNo = floorNo;
         this.monthlyCharge = monthlyCharge;
     }

@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import uk.me.jenewland.natpropsalessys.utils.DataManager;
 import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 import uk.me.jenewland.natpropsalessys.model.Session;
@@ -19,6 +20,8 @@ import uk.me.jenewland.natpropsalessys.model.property.PropertyHouse;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import static uk.me.jenewland.natpropsalessys.Main.dataManager;
 
 public class AdminDashboardController {
 
@@ -80,8 +83,6 @@ public class AdminDashboardController {
 
     @FXML
     private TextField tfBranchSearch, tfPropertySearch;
-
-    private DataController dataController = new DataController("repositories");
 
     private Set<Property> propertyList = new HashSet<>();
 
@@ -257,7 +258,7 @@ public class AdminDashboardController {
         tabColBranchWeb.setCellValueFactory(new PropertyValueFactory<Branch, String>("website"));
         tabColBranchTel.setCellValueFactory(new PropertyValueFactory<Branch, Long>("tel"));
 
-        for (IModel model : dataController.readAll()) {
+        for (IModel model : dataManager.readAll()) {
             // Ignore models that aren't branches
             if (!(model instanceof Branch)) {
                 continue;
@@ -304,7 +305,7 @@ public class AdminDashboardController {
         alert.getButtonTypes().setAll(btnYes, btnNo);
 
         if (alert.showAndWait().get() == btnYes) {
-            dataController.delete(selectedBranch);
+            dataManager.delete(selectedBranch);
             populateBranches();
         }
     }

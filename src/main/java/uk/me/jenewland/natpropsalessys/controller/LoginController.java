@@ -2,7 +2,6 @@ package uk.me.jenewland.natpropsalessys.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,11 +13,12 @@ import uk.me.jenewland.natpropsalessys.model.Session;
 import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
+
+import static uk.me.jenewland.natpropsalessys.Main.dataManager;
 
 public class LoginController
 {
@@ -36,9 +36,6 @@ public class LoginController
 
     @FXML
     private Button btnAdminLogin, btnBranchLogin;
-
-    private DataController branchDC = new DataController("repositories" + File.separator + "branches");
-    private DataController propertyDC = new DataController("repositories" + File.separator + "properties");
 
     private boolean isLoginValid(TextField usernameField, PasswordField passwordField, boolean isAdmin)
     {
@@ -75,7 +72,7 @@ public class LoginController
         // At this stage we know the user isn't an admin so find the branch with matching details
         // and log them in if the correct username/password are supplied.
 
-        Collection<IModel> branches = new HashSet<IModel>(branchDC.readAll());
+        Set<IModel> branches = new HashSet<IModel>(dataManager.readAll());
 
         for (IModel branch : branches) {
             Branch b = (Branch) branch;

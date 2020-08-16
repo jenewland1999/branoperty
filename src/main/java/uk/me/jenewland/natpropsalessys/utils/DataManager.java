@@ -1,36 +1,34 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.utils;
 
 import uk.me.jenewland.natpropsalessys.model.IModel;
-import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.logging.Level;
 
 import static uk.me.jenewland.natpropsalessys.NatPropSalesSys.LOGGER;
 
-public class DataController {
+public class DataManager {
   private final Path PATH;
 
-  public DataController(String path) {
+  public DataManager(String path) {
     PATH = Paths.get(path);
   }
 
   public void create(IModel model) {
-    FileHandler.writeObjsToFile(String.valueOf(PATH.resolve(model.toString()) + ".dat"), model);
+    FileHandler.writeObjsToFile(PATH.resolve(model.toString()) + ".dat", model);
+    LOGGER.log(Level.INFO, "Created object for " + model.toString());
   }
 
   public IModel read(String key) {
-    return (IModel) FileHandler.readObjFromFile(String.valueOf(PATH.resolve(key + ".dat")));
+    return (IModel) FileHandler.readObjFromFile(PATH.resolve(key) + ".dat");
   }
 
-  public Collection<IModel> readAll() {
+  public Set<IModel> readAll() {
     File dir = Paths.get(PATH.toString()).toFile();
     File[] files = dir.listFiles();
 
@@ -38,7 +36,7 @@ public class DataController {
       return null;
     }
 
-    Collection<IModel> list = new ArrayList<>();
+    Set<IModel> list = new HashSet<>();
 
     for (File file : files) {
       list.add((IModel) FileHandler.readObjFromFile(file.getPath()));

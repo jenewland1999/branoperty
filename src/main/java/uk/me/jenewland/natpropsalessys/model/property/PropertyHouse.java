@@ -1,5 +1,7 @@
 package uk.me.jenewland.natpropsalessys.model.property;
 
+import uk.me.jenewland.natpropsalessys.model.Branch;
+
 import java.io.Serializable;
 
 public class PropertyHouse extends Property implements Serializable
@@ -10,12 +12,12 @@ public class PropertyHouse extends Property implements Serializable
 
     public PropertyHouse()
     {
-        super("", 0, 0, 0);
+        super();
     }
 
-    public PropertyHouse(String address, int noOfRooms, int sellingPrice, int soldPrice, int noOfFloors, boolean hasGarage, boolean hasGarden)
+    public PropertyHouse(Branch branch, String address, int noOfRooms, int sellingPrice, int soldPrice, int noOfFloors, boolean hasGarage, boolean hasGarden, TYPES type)
     {
-        super(address, noOfRooms, sellingPrice, soldPrice);
+        super(branch, address, noOfRooms, sellingPrice, soldPrice, type);
         this.noOfFloors = noOfFloors;
         this.hasGarage = hasGarage;
         this.hasGarden = hasGarden;
