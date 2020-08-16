@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Branch implements Serializable, IModel
+public class Branch implements Serializable, IModel, Cloneable
 {
     private String name = "";
     private String address = "";
@@ -19,10 +19,9 @@ public class Branch implements Serializable, IModel
 
     public Branch()
     {
-
     }
 
-    public Branch(String name, String password, String address, String email, String website, long tel)
+    public Branch(String name, String password, String address, String email, String website, long tel, Set<Property> properties)
     {
         this.name = name;
         this.address = address;
@@ -101,11 +100,30 @@ public class Branch implements Serializable, IModel
 
     public void setProperties(Set<Property> properties)
     {
-        this.properties = properties;
+        this.properties = new HashSet<>(properties);
+    }
+
+    public void printProperties() {
+        for (Property property : properties) {
+            System.out.println(property.getAddress());
+        }
+    }
+
+    public void addProperty(Property property) {
+        properties.add(property);
+    }
+
+    public void deleteProperty(Property property) {
+        properties.remove(property);
+    }
+
+    public void updateProperty(Property oldProp, Property newProp) {
+        properties.remove(oldProp);
+        properties.add(newProp);
     }
 
     @Override
     public String toString() {
-        return Integer.toString(getName().hashCode());
+        return getName();
     }
 }

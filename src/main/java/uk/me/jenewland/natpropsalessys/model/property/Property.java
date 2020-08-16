@@ -3,6 +3,7 @@ package uk.me.jenewland.natpropsalessys.model.property;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Property implements Serializable, IModel
@@ -71,7 +72,24 @@ public class Property implements Serializable, IModel
     public boolean isSold() { return this.soldPrice >= 0; }
 
     @Override
-    public String toString() {
-        return Integer.toString(getAddress().hashCode());
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (!(o instanceof Property))
+            return false;
+        Property p = (Property) o;
+        // field comparison
+        return Objects.equals(address, p.address)
+                && Objects.equals(noOfRooms, p.noOfRooms);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, noOfRooms, sellingPrice, soldPrice);
     }
 }

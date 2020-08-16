@@ -18,8 +18,8 @@ import static uk.me.jenewland.natpropsalessys.NatPropSalesSys.LOGGER;
 public class DataController {
   private final Path PATH;
 
-  public DataController(Path path) {
-    PATH = path;
+  public DataController(String path) {
+    PATH = Paths.get(path);
   }
 
   public void create(IModel model) {
@@ -27,7 +27,7 @@ public class DataController {
   }
 
   public IModel read(String key) {
-    return (IModel) FileHandler.readObjFromFile(String.valueOf(PATH.resolve(key.hashCode() + ".dat")));
+    return (IModel) FileHandler.readObjFromFile(String.valueOf(PATH.resolve(key + ".dat")));
   }
 
   public Collection<IModel> readAll() {
@@ -41,7 +41,7 @@ public class DataController {
     Collection<IModel> list = new ArrayList<>();
 
     for (File file : files) {
-      list.add((IModel) FileHandler.readObjFromFile(file.getName()));
+      list.add((IModel) FileHandler.readObjFromFile(file.getPath()));
     }
 
     return list;

@@ -51,9 +51,4 @@ public class User implements Serializable, IModel
     {
         this.dateCreated = dateCreated;
     }
-
-    @Override
-    public String toString() {
-        return Integer.toString(getUsername().hashCode());
-    }
 }
