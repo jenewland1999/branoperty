@@ -94,9 +94,9 @@ public class LoginController
         if (tabAdminLogin.isSelected() && isLoginValid(tfAdminUsername, pfAdminPassword, true)) {
             NatPropSalesSys.LOGGER.log(Level.INFO, "Login successful. Redirecting to dashboard.");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/adminDashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/dashboard.fxml"));
             Parent root = loader.load();
-            AdminDashboardController controller = loader.getController();
+            DashboardController controller = loader.getController();
             controller.setSession(new Session((UserAdmin) FileHandler.readObjFromFile(NatPropSalesSys.getAdminFile())));
             controller.init();
 
