@@ -109,6 +109,19 @@ public class LoginController
 
         } else if (tabBranchLogin.isSelected() && isLoginValid(tfBranchUsername, pfBranchPassword, false)) {
             NatPropSalesSys.LOGGER.log(Level.INFO, "Login successful. Redirecting to dashboard.");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/dashboard.fxml"));
+            Parent root = loader.load();
+            DashboardController controller = loader.getController();
+            controller.setSession(new Session((Branch) dataManager.read(tfBranchUsername.getText())));
+            controller.init();
+
+            Stage stage = new Stage();
+            stage.setTitle("National Property Sales System -  Secretary Dashboard");
+            stage.setScene(new Scene(root, 1024, 768));
+            stage.setResizable(false);
+            stage.show();
+            btnAdminLogin.getScene().getWindow().hide();
         } else {
             NatPropSalesSys.LOGGER.log(Level.WARNING, "Login unsuccessful");
 
