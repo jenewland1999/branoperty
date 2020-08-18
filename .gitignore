@@ -263,5 +263,5 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/git,java,linux,macos,windows,intellij,intellij+iml,visualstudiocode
 
 # Project-specific ignores
-repositories/
+branches/
 src/main/resources/admin.dat
