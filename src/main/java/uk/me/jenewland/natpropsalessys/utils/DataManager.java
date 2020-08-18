@@ -1,5 +1,6 @@
 package uk.me.jenewland.natpropsalessys.utils;
 
+import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 
 import java.io.File;

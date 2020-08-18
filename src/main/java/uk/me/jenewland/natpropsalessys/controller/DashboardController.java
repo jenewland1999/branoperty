@@ -8,20 +8,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.utils.DataManager;
 import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 import uk.me.jenewland.natpropsalessys.model.Session;
 import uk.me.jenewland.natpropsalessys.model.property.Property;
-import uk.me.jenewland.natpropsalessys.model.property.PropertyFlat;
-import uk.me.jenewland.natpropsalessys.model.property.PropertyHouse;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static uk.me.jenewland.natpropsalessys.Main.dataManager;
+import static uk.me.jenewland.natpropsalessys.NatPropSalesSys.LOGGER;
 
 public class DashboardController {
 
@@ -46,37 +47,42 @@ public class DashboardController {
 
     @FXML
     private TableView<Branch> tableViewBranch;
+
     @FXML
-    private TableView<DisplayProperty> tableViewProperty;
+    private TableView<Property> tableViewProperty;
 
     @FXML
     private TableColumn<Branch, String> tabColBranchName;
+
     @FXML
     private TableColumn<Branch, String> tabColBranchAddress;
+
     @FXML
     private TableColumn<Branch, String> tabColBranchEmail;
+
     @FXML
     private TableColumn<Branch, String> tabColBranchWeb;
+
     @FXML
-    private TableColumn<Branch, Long> tabColBranchTel;
+    private TableColumn<Branch, String> tabColBranchTel;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyAddress;
+    private TableColumn<Property, Branch> tabColPropertyBranch;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyRooms;
+    private TableColumn<Property, String> tabColPropertyAddress;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertySellPrice;
+    private TableColumn<Property, Integer> tabColPropertyRooms;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertySoldPrice;
+    private TableColumn<Property, Long> tabColPropertySellPrice;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyFloors;
+    private TableColumn<Property, Long> tabColPropertySoldPrice;
+
     @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyGarage;
-    @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyGarden;
-    @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyFloor;
-    @FXML
-    private TableColumn<DisplayProperty, String> tabColPropertyCharge;
+    private TableColumn<Property, Enum<Property.TYPES>> tabColPropertyType;
 
     @FXML
     private Button btnLogout1, btnLogout2, btnBranchSearch, btnBranchCreate, btnBranchEdit, btnBranchDelete, btnPropertySearch, btnPropertyCreate, btnPropertyEdit, btnPropertyDelete;
@@ -84,119 +90,35 @@ public class DashboardController {
     @FXML
     private TextField tfBranchSearch, tfPropertySearch;
 
-    private Set<Property> propertyList = new HashSet<>();
+    private Set<Property> properties = new HashSet<>();
 
-    public static class DisplayProperty {
-        private PropertyHouse propertyHouse;
-        private PropertyFlat propertyFlat;
-        private Property property;
-        private String address = "";
-        private String type = "";
-        private String noOfRooms = "";
-        private String sellingPrice = "";
-        private String soldPrice = "";
-        private String noOfFloors = "";
-        private String hasGarage = "";
-        private String hasGarden = "";
-        private String floorNo = "";
-        private String monthlyCharge = "";
-
-        public DisplayProperty(Property property) throws IllegalArgumentException {
-            this.property = property;
-            if (property instanceof PropertyHouse) {
-                PropertyHouse propertyHouse = (PropertyHouse) property;
-
-                this.propertyHouse = propertyHouse;
-
-                this.address = propertyHouse.getAddress();
-                this.type = property.getType();
-                this.noOfRooms = Integer.toString(propertyHouse.getNoOfRooms());
-                this.sellingPrice = Integer.toString(propertyHouse.getSellingPrice());
-                this.soldPrice = Integer.toString(propertyHouse.getSoldPrice());
-                this.noOfFloors = Integer.toString(propertyHouse.getNoOfFloors());
-                this.hasGarage = propertyHouse.isHasGarage() ? "Yes" : "No";
-                this.hasGarden = propertyHouse.isHasGarden() ? "Yes" : "No";
-                this.floorNo = "N/A";
-                this.monthlyCharge = "N/A";
-            } else if (property instanceof PropertyFlat) {
-                PropertyFlat propertyFlat = (PropertyFlat) property;
-
-                this.propertyFlat = propertyFlat;
-
-                this.address = propertyFlat.getAddress();
-                this.noOfRooms = Integer.toString(propertyFlat.getNoOfRooms());
-                this.sellingPrice = Integer.toString(propertyFlat.getSellingPrice());
-                this.soldPrice = Integer.toString(propertyFlat.getSoldPrice());
-                this.floorNo = Integer.toString(propertyFlat.getFloorNo());
-                this.monthlyCharge = Integer.toString(propertyFlat.getMonthlyCharge());
-                this.noOfFloors = "N/A";
-                this.hasGarage = "N/A";
-                this.hasGarden = "N/A";
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public String getNoOfRooms() {
-            return noOfRooms;
-        }
-
-        public String getSellingPrice() {
-            return sellingPrice;
-        }
-
-        public String getSoldPrice() {
-            return soldPrice;
-        }
-
-        public String getNoOfFloors() {
-            return noOfFloors;
-        }
-
-        public String getHasGarage() {
-            return hasGarage;
-        }
-
-        public String getHasGarden() {
-            return hasGarden;
-        }
-
-        public String getFloorNo() {
-            return floorNo;
-        }
-
-        public String getMonthlyCharge() {
-            return monthlyCharge;
-        }
-
-        public Property getProperty() {
-            return this.property;
-        }
-
-        public PropertyHouse getPropertyHouse() {
-            if (propertyHouse == null) {
-                return null;
-            }
-
-            return this.propertyHouse;
-        }
-
-        public PropertyFlat getPropertyFlat() {
-            if (propertyFlat == null) {
-                return null;
-            }
-
-            return propertyFlat;
-        }
-    }
+    private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(
+            new Locale("en", "GB")
+    );
 
     public void logout() throws IOException {
         // Close the current stage
-        Stage stage = (Stage) btnLogout1.getScene().getWindow();
+        Stage stage;
+
+        // If the user isn't an admin...
+        if (!getSession().isAdmin()) {
+            // Retrieve the existing branch on disk
+            Branch b = (Branch) dataManager.read(getSession().getBranch().getName());
+            // we must update the branch on disk with changes to its properties
+            dataManager.update(b, getSession().getBranch());
+        }
+
+        try {
+            stage = (Stage) btnLogout1.getScene().getWindow();
+        } catch (NullPointerException e) {
+            stage = (Stage) btnLogout2.getScene().getWindow();
+        }
+
+        if (stage == null) {
+            LOGGER.log(Level.SEVERE, "Unable to logout... Please close the application.");
+            return;
+        }
+
         stage.close();
 
         // Create and show the login stage
@@ -207,8 +129,8 @@ public class DashboardController {
     }
 
     public void init() {
-        String username = getSession().getUserAdmin().getUsername();
-        String welcomeMsg = "Welcome, " + username.substring(0, 1).toUpperCase() + username.substring(1);
+        String username = getSession().getUsername();
+        String welcomeMsg = "Currently logged in as: " + username.substring(0, 1).toUpperCase() + username.substring(1);
         txtWelcomeMsg1.setText(welcomeMsg);
         txtWelcomeMsg2.setText(welcomeMsg);
 
@@ -223,22 +145,140 @@ public class DashboardController {
     }
 
     private void populateProperties() {
-        populateProperties("");
+        populateProperties("", Property.TYPES.NULL, -2);
     }
 
-    private void populateProperties(String query) {
+    private void populateProperties(String query, Property.TYPES type, long soldPrice) {
+        // Clear the table before populating it (refresh functionality)
+        tableViewProperty.getItems().clear();
 
+        ObservableList<Property> rows = FXCollections.observableArrayList();
+        tabColPropertyBranch.setCellValueFactory(new PropertyValueFactory<Property, Branch>("branch"));
+        tabColPropertyAddress.setCellValueFactory(new PropertyValueFactory<Property, String>("address"));
+        tabColPropertyRooms.setCellValueFactory(new PropertyValueFactory<Property, Integer>("noOfRooms"));
+        tabColPropertySellPrice.setCellValueFactory(new PropertyValueFactory<Property, Long>("sellingPrice"));
+        tabColPropertySoldPrice.setCellValueFactory(new PropertyValueFactory<Property, Long>("soldPrice"));
+        tabColPropertyType.setCellValueFactory(new PropertyValueFactory<Property, Enum<Property.TYPES>>("type"));
+
+        List<Property> properties = new ArrayList<>();
+        List<Property> results = new ArrayList<>();
+
+        if (getSession().isAdmin()) {
+            for (IModel model : dataManager.readAll()) {
+                if (!(model instanceof Branch)) {
+                    continue;
+                }
+
+                properties.addAll(((Branch) model).getProperties());
+            }
+        } else {
+            properties.addAll(getSession().getBranch().getProperties());
+        }
+
+        if (!query.isEmpty()) {
+            properties = properties
+                    .stream()
+                    .filter(row -> row.getAddress().toLowerCase().contains(query.trim().toLowerCase()) ||
+                            row.getBranch().getName().toLowerCase().contains(query.trim().toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (type != Property.TYPES.NULL) {
+            properties = properties
+                    .stream()
+                    .filter(row -> row.getType() == type)
+                    .collect(Collectors.toList());
+        }
+
+        if (soldPrice == -1) {
+            properties = properties
+                    .stream()
+                    .filter(row -> !row.isSold())
+                    .collect(Collectors.toList());
+        }
+
+        if (soldPrice >= 0) {
+            properties = properties
+                    .stream()
+                    .filter(row -> row.getSoldPrice() == soldPrice)
+                    .collect(Collectors.toList());
+        }
+
+        rows.addAll(properties);
+
+        tableViewProperty.setItems(rows);
+        tableViewProperty.setEditable(false);
+
+        List<TableColumn<Property, Long>> cols = new ArrayList<>();
+        cols.add(tabColPropertySellPrice);
+        cols.add(tabColPropertySoldPrice);
+
+        for (TableColumn<Property, Long> col : cols) {
+            col.setCellFactory(c -> new TableCell<>() {
+                @Override
+                protected void updateItem(Long item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(numberFormat.format(item));
+                    }
+                }
+            });
+        }
     }
 
     public void searchProperties() {
-        populateProperties(tfPropertySearch.getText());
+        populateProperties(tfPropertySearch.getText(), Property.TYPES.NULL, -2);
     }
 
-    public void createProperty() {}
+    public void createProperty() throws IOException {
+        openModal(
+                "../views/createProperty.fxml",
+                String.format("National Property Sales System - %s Dashboard - Create Property",
+                        getSession().isAdmin() ? "Admin" : "Secretary"
+                        ));
+    }
 
-    public void updateProperty() {}
+    public void updateProperty() throws IOException {
+        openModal(
+                "../views/updateProperty.fxml",
+                String.format("National Property Sales System - %s Dashboard - Update Property",
+                        getSession().isAdmin() ? "Admin" : "Secretary"
+                ));
+    }
 
-    public void deleteProperty() {}
+    public void deleteProperty() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        Property selectedProperty = (Property) tableViewProperty.getSelectionModel().getSelectedItems().get(0);
+
+        alert.setTitle("Confirm Action");
+        alert.setHeaderText("Danger! You are about to remove a property and all of its data. This is an irreversible action.");
+        alert.setContentText("Are you sure you want to delete " + selectedProperty.getAddress() + "?");
+        alert.getButtonTypes().setAll(btnYes, btnNo);
+
+        if (alert.showAndWait().get() == btnYes) {
+            // If user is not an admin...
+            if (!getSession().isAdmin()) {
+                // Remove the branch from the session
+                getSession().getBranch().deleteProperty(selectedProperty);
+            } else {
+                Branch b = selectedProperty.getBranch();
+
+                // remove the property in question
+                b.deleteProperty(selectedProperty);
+
+                // update the branch on disk
+                dataManager.update((Branch) dataManager.read(b.getName()), b);
+            }
+
+            // Repopulate the table view after deleting the property
+            populateProperties();
+        }
+    }
 
     private void populateBranches() {
         populateBranches("");
@@ -258,7 +298,7 @@ public class DashboardController {
         tabColBranchAddress.setCellValueFactory(new PropertyValueFactory<Branch, String>("address"));
         tabColBranchEmail.setCellValueFactory(new PropertyValueFactory<Branch, String>("email"));
         tabColBranchWeb.setCellValueFactory(new PropertyValueFactory<Branch, String>("website"));
-        tabColBranchTel.setCellValueFactory(new PropertyValueFactory<Branch, Long>("tel"));
+        tabColBranchTel.setCellValueFactory(new PropertyValueFactory<Branch, String>("tel"));
 
         for (IModel model : dataManager.readAll()) {
             // Ignore models that aren't branches
@@ -284,15 +324,52 @@ public class DashboardController {
 
         tableViewBranch.setItems(rows);
         tableViewBranch.setEditable(false);
+        tableViewBranch.getSortOrder().add(tabColBranchName);
+
+        tabColBranchName.setCellFactory(c -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item.substring(0, 1).toUpperCase() + item.substring(1));
+                }
+            }
+        });
+
+        // TODO: Format phone number column (Ask Chris/Nick for RegEx solution)
     }
 
     public void searchBranches() {
         populateBranches(tfBranchSearch.getText());
     }
 
-    public void createBranch() {}
+    public void createBranch() throws IOException {
+        FXMLLoader loader = openModal(
+                "../view/createBranch.fxml",
+                "National Property Sales System - Admin Dashboard - Create Branch",
+                400,
+                600
+        );
 
-    public void updateBranch() {}
+        ((CreateBranchController) loader.getController()).setDashboardController(this);
+    }
+
+    public void updateBranch() throws IOException {
+        FXMLLoader loader = openModal(
+                "../view/updateBranch.fxml",
+                "National Property Sales System - Admin Dashboard - Update Branch",
+                400,
+                600
+        );
+        UpdateBranchController controller = (UpdateBranchController) loader.getController();
+
+        controller.setDashboardController(this);
+        controller.setBranch((Branch) tableViewBranch.getSelectionModel().getSelectedItem());
+        controller.populateFields();
+
+    }
 
     public void deleteBranch() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -310,5 +387,28 @@ public class DashboardController {
             dataManager.delete(selectedBranch);
             populateBranches();
         }
+    }
+
+    public void refresh() {
+        if (getSession() != null) {
+            populateProperties();
+            populateBranches();
+        }
+    }
+
+    private FXMLLoader openModal(String viewPath, String title) throws IOException {
+        return openModal(viewPath, title, 1024, 768);
+    }
+
+    private FXMLLoader openModal(String viewPath, String title, double width, double height) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(loader.load(), width, height));
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+
+        return loader;
     }
 }
