@@ -91,6 +91,7 @@ public class AdminDashboardController {
         private PropertyFlat propertyFlat;
         private Property property;
         private String address = "";
+        private String type = "";
         private String noOfRooms = "";
         private String sellingPrice = "";
         private String soldPrice = "";
@@ -108,6 +109,7 @@ public class AdminDashboardController {
                 this.propertyHouse = propertyHouse;
 
                 this.address = propertyHouse.getAddress();
+                this.type = property.getType();
                 this.noOfRooms = Integer.toString(propertyHouse.getNoOfRooms());
                 this.sellingPrice = Integer.toString(propertyHouse.getSellingPrice());
                 this.soldPrice = Integer.toString(propertyHouse.getSoldPrice());
