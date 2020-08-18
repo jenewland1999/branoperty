@@ -18,6 +18,16 @@ public class Session {
     return admin;
   }
 
+  public String getUsername() {
+    if (branch != null) {
+      return branch.getName();
+    } else if (admin != null) {
+      return admin.getUsername();
+    } else {
+      return "invalid user";
+    }
+  }
+
   public Branch getBranch() {
     return branch;
   }

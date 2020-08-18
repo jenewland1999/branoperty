@@ -12,12 +12,12 @@ public class Property implements Serializable, IModel
     protected Branch branch;
     protected String address;
     protected int noOfRooms;
-    protected int sellingPrice;
-    protected int soldPrice;
+    protected long sellingPrice;
+    protected long soldPrice;
     protected TYPES type;
 
 
-    protected enum TYPES {
+    public enum TYPES {
         HOUSE, FLAT, NULL
     }
 
@@ -31,7 +31,7 @@ public class Property implements Serializable, IModel
         this.type = TYPES.NULL;
     }
 
-    public Property(Branch branch, String address, int noOfRooms, int sellingPrice, int soldPrice, TYPES type)
+    public Property(Branch branch, String address, int noOfRooms, long sellingPrice, long soldPrice, TYPES type)
     {
         this.branch = branch;
         this.address = address;
@@ -66,22 +66,22 @@ public class Property implements Serializable, IModel
         this.noOfRooms = noOfRooms;
     }
 
-    public int getSellingPrice()
+    public long getSellingPrice()
     {
         return sellingPrice;
     }
 
-    public void setSellingPrice(int sellingPrice)
+    public void setSellingPrice(long sellingPrice)
     {
         this.sellingPrice = sellingPrice;
     }
 
-    public int getSoldPrice()
+    public long getSoldPrice()
     {
         return soldPrice;
     }
 
-    public void setSoldPrice(int soldPrice)
+    public void setSoldPrice(long soldPrice)
     {
         this.soldPrice = soldPrice;
     }

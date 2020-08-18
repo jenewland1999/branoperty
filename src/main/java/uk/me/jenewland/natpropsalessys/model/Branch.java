@@ -7,13 +7,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Branch implements Serializable, IModel, Cloneable
+public class Branch implements Serializable, IModel
 {
     private String name = "";
     private String address = "";
     private String email = "";
     private String website = "";
-    private long tel = 0;
+    private String tel = "";
     private UserSecretary branchSecretary = new UserSecretary();
     private Set<Property> properties = new HashSet<>();
 
@@ -21,7 +21,7 @@ public class Branch implements Serializable, IModel, Cloneable
     {
     }
 
-    public Branch(String name, String password, String address, String email, String website, long tel, Set<Property> properties)
+    public Branch(String name, String password, String address, String email, String website, String tel)
     {
         this.name = name;
         this.address = address;
@@ -73,12 +73,12 @@ public class Branch implements Serializable, IModel, Cloneable
         this.website = website;
     }
 
-    public long getTel()
+    public String getTel()
     {
         return tel;
     }
 
-    public void setTel(long tel)
+    public void setTel(String tel)
     {
         this.tel = tel;
     }
