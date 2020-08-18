@@ -23,7 +23,7 @@ import java.util.Set;
 
 import static uk.me.jenewland.natpropsalessys.Main.dataManager;
 
-public class AdminDashboardController {
+public class DashboardController {
 
     private Session session;
 
