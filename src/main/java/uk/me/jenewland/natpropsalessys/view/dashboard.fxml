@@ -14,10 +14,23 @@
    <children>
       <TabPane fx:id="tabPaneDashboard" prefHeight="768.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="tableBranch" onSelectionChanged="#refresh" text="Branches">
+          <Tab fx:id="tableBranch" onSelectionChanged="#refresh" text="Branches ">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
+                        <Text layoutX="15.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branches ">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Text>
+                        <Text fx:id="txtWelcomeMsg1" layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Currently logged in as: " textAlignment="RIGHT">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="btnLogout1" layoutX="953.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" />
+                        <Button fx:id="btnBranchEdit" layoutX="826.0" layoutY="551.0" mnemonicParsing="false" onAction="#updateBranch" text="Edit Branch" />
+                        <TextField fx:id="tfBranchSearch" layoutX="786.0" layoutY="158.0" onAction="#searchBranches" onKeyTyped="#searchBranches" />
+                        <Button fx:id="btnBranchSearch" layoutX="953.0" layoutY="158.0" mnemonicParsing="false" onAction="#searchBranches" text="Search" />
                         <TableView fx:id="tableViewBranch" layoutX="14.0" layoutY="194.0" prefHeight="348.0" prefWidth="997.0">
                           <columns>
                             <TableColumn fx:id="tabColBranchName" prefWidth="136.0" text="Name/Username" />
@@ -30,39 +43,15 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Text fx:id="txtWelcomeMsg1" layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, User ">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="btnLogout1" layoutX="932.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <TextField fx:id="tfBranchSearch" layoutX="786.0" layoutY="158.0" onAction="#searchBranches" onKeyTyped="#searchBranches" />
-                        <Button fx:id="btnBranchSearch" layoutX="953.0" layoutY="158.0" mnemonicParsing="false" onAction="#searchBranches" text="Search" />
-                        <Text layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branches" />
-                        <Button fx:id="btnBranchEdit" layoutX="826.0" layoutY="551.0" mnemonicParsing="false" onAction="#updateBranch" text="Edit Branch" />
+                        <Button fx:id="btnBranchCreate" layoutX="14.0" layoutY="158.0" mnemonicParsing="false" onAction="#createBranch" text="Create Branch" />
                         <Button fx:id="btnBranchDelete" layoutX="915.0" layoutY="551.0" mnemonicParsing="false" onAction="#deleteBranch" text="Delete Branch" />
-                        <Button fx:id="btnBranchCreate" layoutX="14.0" layoutY="551.0" mnemonicParsing="false" onAction="#createBranch" text="Create Branch" />
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabProperties" onSelectionChanged="#refresh" text="Properties">
+          <Tab fx:id="tabProperties" onSelectionChanged="#refresh" text="Properties ">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text fx:id="txtWelcomeMsg2" layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, User ">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="btnLogout2" layoutX="932.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
                         <TableView fx:id="tableViewProperty" layoutX="14.0" layoutY="194.0" prefHeight="348.0" prefWidth="997.0">
                            <columns>
                               <TableColumn fx:id="tabColPropertyBranch" editable="false" prefWidth="136.0" text="Branch" />
@@ -78,10 +67,20 @@
                         </TableView>
                         <TextField fx:id="tfPropertySearch" layoutX="786.0" layoutY="158.0" onAction="#searchProperties" onKeyTyped="#searchProperties" />
                         <Button fx:id="btnPropertySearch" layoutX="953.0" layoutY="158.0" mnemonicParsing="false" onAction="#searchProperties" text="Search" />
-                        <Text layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties" />
                         <Button fx:id="btnPropertyEdit" layoutX="810.0" layoutY="551.0" mnemonicParsing="false" onAction="#updateProperty" text="Edit Property" />
                         <Button layoutX="907.0" layoutY="551.0" mnemonicParsing="false" onAction="#deleteProperty" text="Delete Property" />
-                        <Button fx:id="btnPropertyCreate" layoutX="14.0" layoutY="551.0" mnemonicParsing="false" onAction="#createProperty" text="Create Property" />
+                        <Button fx:id="btnPropertyCreate" layoutX="14.0" layoutY="158.0" mnemonicParsing="false" onAction="#createProperty" text="Create Property" />
+                        <Text layoutX="15.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="txtWelcomeMsg2" layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Currently logged in as: " textAlignment="RIGHT">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="btnLogout2" layoutX="953.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" />
                      </children></AnchorPane>
             </content>
           </Tab>

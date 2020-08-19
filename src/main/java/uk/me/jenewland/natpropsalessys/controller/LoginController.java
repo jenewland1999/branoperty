@@ -2,11 +2,8 @@ package uk.me.jenewland.natpropsalessys.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.NatPropSalesSys;
+import uk.me.jenewland.natpropsalessys.Main;
 import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 import uk.me.jenewland.natpropsalessys.model.Session;
@@ -14,19 +11,17 @@ import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 
-import static uk.me.jenewland.natpropsalessys.Main.dataManager;
+import static uk.me.jenewland.natpropsalessys.Main.*;
 
 public class LoginController
 {
     @FXML
-    private Tab tabAdminLogin, tabBranchLogin;
+    private TabPane tabPane;
 
     @FXML
-    private Label lblBranchUsername, lblBranchPassword, lblAdminUsername, lblAdminPassword;
+    private Tab tabAdminLogin;
 
     @FXML
     private TextField tfBranchUsername, tfAdminUsername;
@@ -34,105 +29,136 @@ public class LoginController
     @FXML
     private PasswordField pfBranchPassword, pfAdminPassword;
 
-    @FXML
-    private Button btnAdminLogin, btnBranchLogin;
-
-    private boolean isLoginValid(TextField usernameField, PasswordField passwordField, boolean isAdmin)
-    {
-        // Retrieve the username and password typed by the user
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-
+    /**
+     * Checks the passed in username and password against the stored branches
+     * or the stored admin then returns either null or a new instance of
+     * {@code Session} class based on whether the credentials match.
+     *
+     * @param username the username that the user has typed.
+     * @param password the password that the user has typed.
+     * @param isAdmin whether or not we're checking for admin login.
+     * @return either null or a new instance of {@code Session} class.
+     */
+    private Session getSession(String username, String password, boolean isAdmin) {
         // Check if username and password aren't blank
         if (username.isBlank() || password.isBlank()) {
-            return false;
+            return null;
         }
 
         // If the user is an administrator then check their login
         if (isAdmin) {
             // Retrieve the admin's credentials from disk
             Object admin = FileHandler.readObjFromFile(
-              NatPropSalesSys.getAdminFile()
+              Main.getAdminFile()
             );
 
             // Check if admin is instance of UserAdmin
             if (!(admin instanceof UserAdmin)) {
-                return false;
+                return null;
             }
 
-            // Cast the object to UserAdmin and retrieve username and password field
+            // Cast the object to UserAdmin and retrieve username and password
+            // field from said object
             UserAdmin userAdmin = (UserAdmin) admin;
             String userAdminUsername = userAdmin.getUsername();
             String userAdminPassword = userAdmin.getPassword();
 
-            // Login credentials are correct;
-            return userAdminUsername.equalsIgnoreCase(username) && userAdminPassword.equals(password);
-        }
-
-        // At this stage we know the user isn't an admin so find the branch with matching details
-        // and log them in if the correct username/password are supplied.
-
-        Set<IModel> branches = new HashSet<IModel>(dataManager.readAll());
-
-        for (IModel branch : branches) {
-            Branch b = (Branch) branch;
-
-            String userBranchUsername = b.getBranchSecretary().getUsername();
-            String userBranchPassword = b.getBranchSecretary().getPassword();
-
-            if (userBranchUsername.equalsIgnoreCase(username) && userBranchPassword.equalsIgnoreCase(password)) {
-                return true;
+            // Check login credentials and if they're valid return the new
+            // session otherwise return null as login failed
+            if (userAdminUsername.equalsIgnoreCase(username) && userAdminPassword.equals(password)) {
+                return new Session((UserAdmin) FileHandler.readObjFromFile(Main.getAdminFile()));
+            } else {
+                return null;
             }
         }
 
-        return false;
+        /*
+            At this stage we know the user isn't an admin so find the branch
+            with matching details and log them in if the correct
+            username/password are supplied.
+         */
+
+        // Retrieve all the branches as IModels and iterate over them
+        for (IModel model : dataManager.readAll()) {
+            // If the model isn't an instance of Branch then skip it
+            if (!(model instanceof Branch)) {
+                continue;
+            }
+
+            // Cast the model to branch and store in local field
+            Branch branch = (Branch) model;
+
+            // Check the login credentials and store them in a boolean
+            boolean isValid = branch.getBranchSecretary().getUsername().equalsIgnoreCase(username)
+                    && branch.getBranchSecretary().getPassword().equalsIgnoreCase(password);
+
+            // Check login credentials and if they're valid return the new
+            // session otherwise return null as login failed
+            if (isValid) {
+                return new Session((Branch) dataManager.read(tfBranchUsername.getText()));
+            }
+        }
+
+        // If all else fails return null :(
+        return null;
     }
 
-    public void login() throws IOException
-    {
-        NatPropSalesSys.LOGGER.log(Level.INFO,"Logging in...");
-        if (tabAdminLogin.isSelected() && isLoginValid(tfAdminUsername, pfAdminPassword, true)) {
-            NatPropSalesSys.LOGGER.log(Level.INFO, "Login successful. Redirecting to dashboard.");
+    /**
+     * GUI login button event handler which handles login.
+     * @throws IOException
+     */
+    public void login() throws IOException {
+        // Store whether we're checking for an administrator or not
+        boolean isAdmin = tabAdminLogin.isSelected();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/dashboard.fxml"));
-            Parent root = loader.load();
-            DashboardController controller = loader.getController();
-            controller.setSession(new Session((UserAdmin) FileHandler.readObjFromFile(NatPropSalesSys.getAdminFile())));
-            controller.init();
+        // Log information to the console on what's happening
+        logger.log(Level.INFO,"Logging in...");
 
-            Stage stage = new Stage();
-            stage.setTitle("National Property Sales System - Admin Dashboard");
-            stage.setScene(new Scene(root, 1024, 768));
-            stage.setResizable(false);
-            stage.show();
-            btnAdminLogin.getScene().getWindow().hide();
+        // Declare a local session field
+        Session session;
 
-        } else if (tabBranchLogin.isSelected() && isLoginValid(tfBranchUsername, pfBranchPassword, false)) {
-            NatPropSalesSys.LOGGER.log(Level.INFO, "Login successful. Redirecting to dashboard.");
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/dashboard.fxml"));
-            Parent root = loader.load();
-            DashboardController controller = loader.getController();
-            controller.setSession(new Session((Branch) dataManager.read(tfBranchUsername.getText())));
-            controller.init();
-
-            Stage stage = new Stage();
-            stage.setTitle("National Property Sales System -  Secretary Dashboard");
-            stage.setScene(new Scene(root, 1024, 768));
-            stage.setResizable(false);
-            stage.show();
-            btnAdminLogin.getScene().getWindow().hide();
+        // Retrieve either the admin or branch secretaries session based on
+        // which login tab we're on getSession checks user's login
+        // credentials and returns either a new instance of session or null if
+        // login failed.
+        if (isAdmin) {
+            session = getSession(tfAdminUsername.getText(), pfAdminPassword.getText(), true);
         } else {
-            NatPropSalesSys.LOGGER.log(Level.WARNING, "Login unsuccessful");
+            session = getSession(tfBranchUsername.getText(), pfBranchPassword.getText(), false);
+        }
 
-            // Clear the text and password fields (For improved UX)
-            tfAdminUsername.clear();
-            pfAdminPassword.clear();
-            tfBranchUsername.clear();
-            pfBranchPassword.clear();
+        // If login didn't fail open the dashboard otherwise present the user
+        // with an error dialog
+        if (session != null) {
+            // Log information to the console on what's happening
+            logger.log(Level.INFO, "Login successful. Redirecting to dashboard.");
+
+            // Format the title string based of being an admin or not
+            String title = String.format(
+                    "National Property Sales System - %s Dashboard",
+                    isAdmin ? "Admin" : "Secretary"
+            );
+
+            // Open the GUI and initialise the dashboard controller
+            FXMLLoader loader = openGui("./view/dashboard.fxml", title, false);
+            DashboardController controller = loader.getController();
+            controller.setSession(session);
+            controller.init();
+
+            // Then hide the login screen
+            tabPane.getScene().getWindow().hide();
+        } else {
+            // Log information to the console on what's happening
+            logger.log(Level.INFO, "Login unsuccessful. Please try again.");
 
             // Display feedback to user with alert message
             new Alert(Alert.AlertType.ERROR, "Invalid login credentials.", ButtonType.OK).showAndWait();
         }
+
+        // Clear the text and password fields (For improved UX)
+        tfAdminUsername.clear();
+        pfAdminPassword.clear();
+        tfBranchUsername.clear();
+        pfBranchPassword.clear();
     }
 }

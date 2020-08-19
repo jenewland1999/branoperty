@@ -4,12 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import uk.me.jenewland.natpropsalessys.model.Branch;
 import uk.me.jenewland.natpropsalessys.model.IModel;
 import uk.me.jenewland.natpropsalessys.model.Session;
@@ -18,15 +15,13 @@ import uk.me.jenewland.natpropsalessys.model.property.Property;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static uk.me.jenewland.natpropsalessys.Main.dataManager;
-import static uk.me.jenewland.natpropsalessys.NatPropSalesSys.LOGGER;
+import static uk.me.jenewland.natpropsalessys.Main.*;
 
 public class DashboardController {
-
     private Session session;
+    private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en", "GB"));
 
     public void setSession(Session session) {
         this.session = session;
@@ -38,9 +33,6 @@ public class DashboardController {
 
     @FXML
     private TabPane tabPaneDashboard;
-
-    @FXML
-    private Tab tabBranches, tabProperties;
 
     @FXML
     private Text txtWelcomeMsg1, txtWelcomeMsg2;
@@ -85,47 +77,23 @@ public class DashboardController {
     private TableColumn<Property, Enum<Property.TYPES>> tabColPropertyType;
 
     @FXML
-    private Button btnLogout1, btnLogout2, btnBranchSearch, btnBranchCreate, btnBranchEdit, btnBranchDelete, btnPropertySearch, btnPropertyCreate, btnPropertyEdit, btnPropertyDelete;
-
-    @FXML
     private TextField tfBranchSearch, tfPropertySearch;
 
-    private Set<Property> properties = new HashSet<>();
-
-    private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(
-            new Locale("en", "GB")
-    );
-
     public void logout() throws IOException {
-        // Close the current stage
-        Stage stage;
-
-        // If the user isn't an admin...
+        // If the user isn't an admin we need to save the changes made to disk
         if (!getSession().isAdmin()) {
-            // Retrieve the existing branch on disk
-            Branch b = (Branch) dataManager.read(getSession().getBranch().getName());
-            // we must update the branch on disk with changes to its properties
-            dataManager.update(b, getSession().getBranch());
+            dataManager.update(dataManager.read(getSession().getBranch().getName()), getSession().getBranch());
         }
 
-        try {
-            stage = (Stage) btnLogout1.getScene().getWindow();
-        } catch (NullPointerException e) {
-            stage = (Stage) btnLogout2.getScene().getWindow();
-        }
+        // Open the login GUI
+        openGui(
+                "./view/login.fxml",
+                "National Property Sales System - Login",
+                600, 400, false
+        );
 
-        if (stage == null) {
-            LOGGER.log(Level.SEVERE, "Unable to logout... Please close the application.");
-            return;
-        }
-
-        stage.close();
-
-        // Create and show the login stage
-        stage.setTitle("National Property Sales System - Login");
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/login.fxml")), 600, 400));
-        stage.setResizable(false);
-        stage.show();
+        // Then close the dashboard
+        tabPaneDashboard.getScene().getWindow().hide();
     }
 
     public void init() {
@@ -161,7 +129,6 @@ public class DashboardController {
         tabColPropertyType.setCellValueFactory(new PropertyValueFactory<Property, Enum<Property.TYPES>>("type"));
 
         List<Property> properties = new ArrayList<>();
-        List<Property> results = new ArrayList<>();
 
         if (getSession().isAdmin()) {
             for (IModel model : dataManager.readAll()) {
@@ -212,8 +179,7 @@ public class DashboardController {
         List<TableColumn<Property, Long>> cols = new ArrayList<>();
         cols.add(tabColPropertySellPrice);
         cols.add(tabColPropertySoldPrice);
-
-        for (TableColumn<Property, Long> col : cols) {
+        cols.forEach(col -> {
             col.setCellFactory(c -> new TableCell<>() {
                 @Override
                 protected void updateItem(Long item, boolean empty) {
@@ -225,7 +191,7 @@ public class DashboardController {
                     }
                 }
             });
-        }
+        });
     }
 
     public void searchProperties() {
@@ -233,19 +199,19 @@ public class DashboardController {
     }
 
     public void createProperty() throws IOException {
-        openModal(
-                "../views/createProperty.fxml",
+        openGui(
+                "./views/createProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Create Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"
-                        ));
+                        ), true);
     }
 
     public void updateProperty() throws IOException {
-        openModal(
-                "../views/updateProperty.fxml",
+        openGui(
+                "./views/updateProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Update Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"
-                ));
+                ), true);
     }
 
     public void deleteProperty() {
@@ -253,14 +219,14 @@ public class DashboardController {
         ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
 
-        Property selectedProperty = (Property) tableViewProperty.getSelectionModel().getSelectedItems().get(0);
+        Property selectedProperty = (Property) tableViewProperty.getSelectionModel().getSelectedItem();
 
         alert.setTitle("Confirm Action");
         alert.setHeaderText("Danger! You are about to remove a property and all of its data. This is an irreversible action.");
         alert.setContentText("Are you sure you want to delete " + selectedProperty.getAddress() + "?");
         alert.getButtonTypes().setAll(btnYes, btnNo);
 
-        if (alert.showAndWait().get() == btnYes) {
+        if (alert.showAndWait().isPresent() && alert.showAndWait().get() == btnYes) {
             // If user is not an admin...
             if (!getSession().isAdmin()) {
                 // Remove the branch from the session
@@ -346,24 +312,28 @@ public class DashboardController {
     }
 
     public void createBranch() throws IOException {
-        FXMLLoader loader = openModal(
-                "../view/createBranch.fxml",
+        FXMLLoader loader = openGui(
+                "./view/createBranch.fxml",
                 "National Property Sales System - Admin Dashboard - Create Branch",
                 400,
-                600
+                600,
+                true
         );
 
         ((CreateBranchController) loader.getController()).setDashboardController(this);
     }
 
     public void updateBranch() throws IOException {
-        FXMLLoader loader = openModal(
-                "../view/updateBranch.fxml",
+        FXMLLoader loader = openGui(
+                "./view/updateBranch.fxml",
                 "National Property Sales System - Admin Dashboard - Update Branch",
                 400,
-                600
+                600,
+                true
         );
-        UpdateBranchController controller = (UpdateBranchController) loader.getController();
+
+
+        UpdateBranchController controller = loader.getController();
 
         controller.setDashboardController(this);
         controller.setBranch((Branch) tableViewBranch.getSelectionModel().getSelectedItem());
@@ -383,7 +353,7 @@ public class DashboardController {
         alert.setContentText("Are you sure you want to delete " + selectedBranch.getName() + "?");
         alert.getButtonTypes().setAll(btnYes, btnNo);
 
-        if (alert.showAndWait().get() == btnYes) {
+        if (alert.showAndWait().isPresent() && alert.showAndWait().get() == btnYes) {
             dataManager.delete(selectedBranch);
             populateBranches();
         }
@@ -396,19 +366,5 @@ public class DashboardController {
         }
     }
 
-    private FXMLLoader openModal(String viewPath, String title) throws IOException {
-        return openModal(viewPath, title, 1024, 768);
-    }
 
-    private FXMLLoader openModal(String viewPath, String title, double width, double height) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
-        Stage stage = new Stage();
-        stage.setScene(new Scene(loader.load(), width, height));
-        stage.setTitle(title);
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        return loader;
-    }
 }

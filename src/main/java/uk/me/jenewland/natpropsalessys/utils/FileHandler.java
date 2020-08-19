@@ -1,7 +1,5 @@
 package uk.me.jenewland.natpropsalessys.utils;
 
-import uk.me.jenewland.natpropsalessys.Main;
-
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,12 +10,19 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static uk.me.jenewland.natpropsalessys.Main.logger;
 
 public class FileHandler
 {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-
+    /**
+     * Write one or more objects to disk using Java's Serialization API.
+     * Objects passed in must implement {@code Serializable} otherwise it
+     * will fail.
+     *
+     * @param filename the name of the file to serialize object to.
+     * @param object the object(s) to serialize and store on disk.
+     */
     public static void writeObjsToFile(String filename, Object... object)
     {
         try {
@@ -30,11 +35,18 @@ public class FileHandler
 
             oos.close();
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Unexpected IO Error");
-            LOGGER.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, "Unexpected IO Error");
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
+    /**
+     * Read all the objects from a file on disk using Java's Serialization API
+     * and Java IO methods.
+     *
+     * @param filename the name of the file to deserialize objects from.
+     * @return a {@code List} of the objects from the file.
+     */
     public static List<Object> readObjsFromFile(String filename)
     {
         List<Object> objects = new ArrayList<>();
@@ -49,27 +61,31 @@ public class FileHandler
 
             OIS.close();
         } catch (EOFException e) {
-            LOGGER.log(Level.INFO, String.format("EOF Reached. Retrieved %s objects from file", objects.size()));
+            logger.log(Level.INFO, String.format("EOF Reached. Retrieved %s objects from file", objects.size()));
         } catch (ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "The class being read is unavailable.");
+            logger.log(Level.SEVERE, "The class being read is unavailable.");
         } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Unable to find the specified file.");
+            logger.log(Level.SEVERE, "Unable to find the specified file.");
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Unexpected IO Error");
-            LOGGER.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, "Unexpected IO Error");
+            logger.log(Level.SEVERE, e.getMessage());
         }
 
         return objects;
     }
 
+    /**
+     * Read all the objects from a file on disk using Java's Serialization API
+     * and Java IO methods and return the first item in the list of returned
+     * objects.
+     *
+     * @param filename the name of the file to deserialize objects from.
+     * @return the first {@code Object} from the specified file.
+     */
     public static Object readObjFromFile(String filename)
     {
         List<Object> objects = readObjsFromFile(filename);
 
-        if (objects.size() > 0) {
-            return objects.get(0);
-        }
-
-        return null;
+        return objects.size() > 0 ? objects.get(0) : null;
     }
 }
