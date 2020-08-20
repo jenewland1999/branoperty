@@ -171,20 +171,27 @@ public class Property implements Serializable, IModel {
      * @return true/false depending on if the two objects are equal.
      */
     @Override
-    public boolean equals(Object o) {
-        // self check
-        if (this == o)
-            return true;
-        // null check
-        if (o == null)
-            return false;
-        // type check and cast
-        if (!(o instanceof Property))
-            return false;
-        Property p = (Property) o;
-        // field comparison
-        return Objects.equals(address, p.address)
-                && Objects.equals(noOfRooms, p.noOfRooms);
+    public boolean equals(Object object) {
+        // First, check if the object is itself.
+        if (this == object) return true;
+
+        // Next, check if the object is null.
+        if (object == null) return false;
+
+        // Then, check if the object is of the same type.
+        if (!(object instanceof Property)) return false;
+
+        // The objects are of the same type so cast the provided object for
+        // deeper comparison (field comparisons).
+        Property property = (Property) object;
+
+        // Finally, return the result of objects' field comparisons.
+        // NB: The comparison disregards the branch field as it's not required.
+        return Objects.equals(address, property.address)
+                && Objects.equals(noOfRooms, property.noOfRooms)
+                && Objects.equals(sellingPrice, property.sellingPrice)
+                && Objects.equals(soldPrice, property.soldPrice)
+                && Objects.equals(type, property.type);
     }
 
     /**
@@ -195,6 +202,6 @@ public class Property implements Serializable, IModel {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(address, noOfRooms, sellingPrice, soldPrice);
+        return Objects.hash(address, noOfRooms, sellingPrice, soldPrice, type);
     }
 }
