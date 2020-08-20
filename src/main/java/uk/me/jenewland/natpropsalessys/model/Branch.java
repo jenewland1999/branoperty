@@ -178,9 +178,9 @@ public class Branch implements Serializable, IModel {
      * branch.
      */
     public void printProperties() {
-        for (Property property : properties) {
-            System.out.println(property.getAddress());
-        }
+        properties.forEach(property -> {
+            System.out.printf("Associated Branch: %s%nAddress: %s%n", getName(), property.getAddress());
+        });
     }
 
     /**
