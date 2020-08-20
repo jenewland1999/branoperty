@@ -210,6 +210,11 @@ public class DashboardController {
     }
 
     public void updateProperty() throws IOException {
+        if (tableViewProperty.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
         openGui(
                 "./views/updateProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Update Property",
@@ -218,6 +223,11 @@ public class DashboardController {
     }
 
     public void deleteProperty() {
+        if (tableViewProperty.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
@@ -327,6 +337,11 @@ public class DashboardController {
     }
 
     public void updateBranch() throws IOException {
+        if (tableViewBranch.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
         FXMLLoader loader = openGui(
                 "./view/updateBranch.fxml",
                 "National Property Sales System - Admin Dashboard - Update Branch",
@@ -335,16 +350,19 @@ public class DashboardController {
                 true
         );
 
-
         UpdateBranchController controller = loader.getController();
 
         controller.setDashboardController(this);
         controller.setBranch((Branch) tableViewBranch.getSelectionModel().getSelectedItem());
         controller.populateFields();
-
     }
 
     public void deleteBranch() {
+        if (tableViewBranch.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
@@ -369,5 +387,14 @@ public class DashboardController {
         }
     }
 
+    private void showItemNotSelectedWarning() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        ButtonType btnOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
 
+        alert.setTitle("Whoops! Can't do that.");
+        alert.setHeaderText("Whoops! You must select an item from the table.");
+        alert.setContentText("This operation cannot be performed until an item is selected. Please select an item from the table.");
+        alert.getButtonTypes().setAll(btnOk);
+        alert.showAndWait();
+    }
 }
