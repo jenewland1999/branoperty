@@ -211,6 +211,26 @@ public class DashboardController {
                 ), true);
     }
 
+    public void viewProperty() throws IOException {
+        if (tableViewProperty.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
+        FXMLLoader loader = openGui(
+                "./view/viewProperty.fxml",
+                String.format("National Property Sales System - %s Dashboard - View Property",
+                        getSession().isAdmin() ? "Admin" : "Secretary"),
+                800,
+                600,
+                true
+        );
+
+        ViewPropertyController controller = loader.getController();
+        controller.setDashboardController(this);
+        controller.setProperty(tableViewProperty.getSelectionModel().getSelectedItem());
+    }
+
     public void updateProperty() throws IOException {
         if (tableViewProperty.getSelectionModel().isEmpty()) {
             showItemNotSelectedWarning();
@@ -324,6 +344,25 @@ public class DashboardController {
 
     public void searchBranches() {
         populateBranches(tfBranchSearch.getText());
+    }
+
+    public void viewBranch() throws IOException {
+        if (tableViewBranch.getSelectionModel().isEmpty()) {
+            showItemNotSelectedWarning();
+            return;
+        }
+
+        FXMLLoader loader = openGui(
+                "./view/viewBranch.fxml",
+                "National Property Sales System - Admin Dashboard - View Branch",
+                400,
+                600,
+                true
+        );
+
+        ViewBranchController controller = loader.getController();
+        controller.setDashboardController(this);
+        controller.setBranch((Branch) tableViewBranch.getSelectionModel().getSelectedItem());
     }
 
     public void createBranch() throws IOException {
