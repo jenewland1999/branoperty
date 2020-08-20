@@ -6,7 +6,7 @@ import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
  * Session class to store the currently logged in user and their data. Once
  * instantiated the method becomes read-only.
  */
-public class Session {
+public final class Session {
     private UserAdmin admin;
     private Branch branch;
 
@@ -33,7 +33,7 @@ public class Session {
      *
      * @return the admin field.
      */
-    public UserAdmin getAdmin() {
+    public final UserAdmin getAdmin() {
         return admin;
     }
 
@@ -42,7 +42,7 @@ public class Session {
      *
      * @return the branch field.
      */
-    public Branch getBranch() {
+    public final Branch getBranch() {
         return branch;
     }
 
@@ -52,7 +52,7 @@ public class Session {
      *
      * @return the username of the admin or branch secretary.
      */
-    public String getUsername() {
+    public final String getUsername() {
         if (branch != null) return branch.getName();
         if (admin != null) return admin.getUsername();
         return "invalid session";
@@ -63,7 +63,7 @@ public class Session {
      *
      * @return true if admin; false otherwise.
      */
-    public boolean isAdmin() {
+    public final boolean isAdmin() {
         return branch == null && admin != null;
     }
 }
