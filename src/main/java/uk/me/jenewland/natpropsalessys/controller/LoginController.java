@@ -15,8 +15,7 @@ import java.util.logging.Level;
 
 import static uk.me.jenewland.natpropsalessys.Main.*;
 
-public class LoginController
-{
+public class LoginController {
     @FXML
     private TabPane tabPane;
 
@@ -36,7 +35,7 @@ public class LoginController
      *
      * @param username the username that the user has typed.
      * @param password the password that the user has typed.
-     * @param isAdmin whether or not we're checking for admin login.
+     * @param isAdmin  whether or not we're checking for admin login.
      * @return either null or a new instance of {@code Session} class.
      */
     private Session getSession(String username, String password, boolean isAdmin) {
@@ -49,7 +48,7 @@ public class LoginController
         if (isAdmin) {
             // Retrieve the admin's credentials from disk
             Object admin = FileHandler.readObjFromFile(
-              Main.getAdminFile()
+                    Main.getAdminFile()
             );
 
             // Check if admin is instance of UserAdmin
@@ -105,6 +104,7 @@ public class LoginController
 
     /**
      * GUI login button event handler which handles login.
+     *
      * @throws IOException
      */
     public void login() throws IOException {
@@ -112,7 +112,7 @@ public class LoginController
         boolean isAdmin = tabAdminLogin.isSelected();
 
         // Log information to the console on what's happening
-        logger.log(Level.INFO,"Logging in...");
+        logger.log(Level.INFO, "Logging in...");
 
         // Declare a local session field
         Session session;

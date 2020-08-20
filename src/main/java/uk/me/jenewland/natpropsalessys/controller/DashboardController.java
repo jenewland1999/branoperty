@@ -14,10 +14,13 @@ import uk.me.jenewland.natpropsalessys.model.property.Property;
 
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static uk.me.jenewland.natpropsalessys.Main.*;
+import static uk.me.jenewland.natpropsalessys.Main.dataManager;
+import static uk.me.jenewland.natpropsalessys.Main.openGui;
 
 public class DashboardController {
     private Session session;
@@ -203,7 +206,7 @@ public class DashboardController {
                 "./views/createProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Create Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"
-                        ), true);
+                ), true);
     }
 
     public void updateProperty() throws IOException {
@@ -282,7 +285,7 @@ public class DashboardController {
                 // Search by name or address
                 // TODO: Improve search so you can specify which field you want to search by
                 if (branch.getName().toLowerCase().contains(query.trim().toLowerCase()) ||
-                branch.getAddress().toLowerCase().contains(query.trim().toLowerCase())) {
+                        branch.getAddress().toLowerCase().contains(query.trim().toLowerCase())) {
                     rows.add(branch);
                 }
             }

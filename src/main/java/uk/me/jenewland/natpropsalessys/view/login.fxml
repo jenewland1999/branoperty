@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.me.jenewland.natpropsalessys.controller.LoginController">
-   <children>
-      <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab fx:id="tabBranchLogin" closable="false" text="Branch Login">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="tfBranchUsername" layoutX="220.0" layoutY="132.0" promptText="Username" />
-                        <PasswordField fx:id="pfBranchPassword" layoutX="220.0" layoutY="195.0" promptText="Password" />
-                        <Label fx:id="lblBranchUsername" layoutX="220.0" layoutY="109.0" text="Username" />
-                        <Label fx:id="lblBranchPassword" layoutX="220.0" layoutY="170.0" text="Password" />
-                        <Button fx:id="btnBranchLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="tabAdminLogin" closable="false" text="Admin Login">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="tfAdminUsername" layoutX="220.0" layoutY="132.0" promptText="Username" />
-                        <PasswordField fx:id="pfAdminPassword" layoutX="220.0" layoutY="195.0" promptText="Password" />
-                        <Label fx:id="lblAdminUsername" layoutX="220.0" layoutY="109.0" text="Username" />
-                        <Label fx:id="lblAdminPassword" layoutX="220.0" layoutY="170.0" text="Password" />
-                        <Button fx:id="btnAdminLogin" defaultButton="true" layoutX="221.0" layoutY="232.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="uk.me.jenewland.natpropsalessys.controller.LoginController">
+    <children>
+        <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="tabBranchLogin" closable="false" text="Branch Login">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TextField fx:id="tfBranchUsername" layoutX="220.0" layoutY="132.0"
+                                           promptText="Username"/>
+                                <PasswordField fx:id="pfBranchPassword" layoutX="220.0" layoutY="195.0"
+                                               promptText="Password"/>
+                                <Label fx:id="lblBranchUsername" layoutX="220.0" layoutY="109.0" text="Username"/>
+                                <Label fx:id="lblBranchPassword" layoutX="220.0" layoutY="170.0" text="Password"/>
+                                <Button fx:id="btnBranchLogin" defaultButton="true" layoutX="221.0" layoutY="232.0"
+                                        mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabAdminLogin" closable="false" text="Admin Login">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TextField fx:id="tfAdminUsername" layoutX="220.0" layoutY="132.0"
+                                           promptText="Username"/>
+                                <PasswordField fx:id="pfAdminPassword" layoutX="220.0" layoutY="195.0"
+                                               promptText="Password"/>
+                                <Label fx:id="lblAdminUsername" layoutX="220.0" layoutY="109.0" text="Username"/>
+                                <Label fx:id="lblAdminPassword" layoutX="220.0" layoutY="170.0" text="Password"/>
+                                <Button fx:id="btnAdminLogin" defaultButton="true" layoutX="221.0" layoutY="232.0"
+                                        mnemonicParsing="false" onAction="#login" text="Login" textAlignment="CENTER"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>

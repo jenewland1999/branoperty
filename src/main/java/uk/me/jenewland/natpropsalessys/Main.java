@@ -13,7 +13,7 @@ import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Paths; 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -113,8 +113,8 @@ public class Main extends Application {
      * of 1024x768 (wxh).
      *
      * @param viewPath the relative filepath (inc. extension) to fxml view.
-     * @param title the window title to be displayed.
-     * @param isModal whether or not to display the window as a modal.
+     * @param title    the window title to be displayed.
+     * @param isModal  whether or not to display the window as a modal.
      * @return returns the {@code FXMLLoader} instance for the newly opened gui.
      * @throws IOException
      */
@@ -127,10 +127,10 @@ public class Main extends Application {
      * dimensions.
      *
      * @param viewPath the relative filepath (inc. extension) to fxml view.
-     * @param title the window title to be displayed.
-     * @param width the width (px) of the window.
-     * @param height the height (px) of the window.
-     * @param isModal whether or not to display the window as a modal.
+     * @param title    the window title to be displayed.
+     * @param width    the width (px) of the window.
+     * @param height   the height (px) of the window.
+     * @param isModal  whether or not to display the window as a modal.
      * @return returns the {@code FXMLLoader} instance for the newly opened gui.
      * @throws IOException
      */

@@ -1,35 +1,26 @@
 package uk.me.jenewland.natpropsalessys.utils;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
 import static uk.me.jenewland.natpropsalessys.Main.logger;
 
-public class FileHandler
-{
+public class FileHandler {
     /**
      * Write one or more objects to disk using Java's Serialization API.
      * Objects passed in must implement {@code Serializable} otherwise it
      * will fail.
      *
      * @param filename the name of the file to serialize object to.
-     * @param object the object(s) to serialize and store on disk.
+     * @param object   the object(s) to serialize and store on disk.
      */
-    public static void writeObjsToFile(String filename, Object... object)
-    {
+    public static void writeObjsToFile(String filename, Object... object) {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
 
-            for (Object obj : object)
-            {
+            for (Object obj : object) {
                 oos.writeObject(obj);
             }
 
@@ -47,8 +38,7 @@ public class FileHandler
      * @param filename the name of the file to deserialize objects from.
      * @return a {@code List} of the objects from the file.
      */
-    public static List<Object> readObjsFromFile(String filename)
-    {
+    public static List<Object> readObjsFromFile(String filename) {
         List<Object> objects = new ArrayList<>();
 
         try {
@@ -82,8 +72,7 @@ public class FileHandler
      * @param filename the name of the file to deserialize objects from.
      * @return the first {@code Object} from the specified file.
      */
-    public static Object readObjFromFile(String filename)
-    {
+    public static Object readObjFromFile(String filename) {
         List<Object> objects = readObjsFromFile(filename);
 
         return objects.size() > 0 ? objects.get(0) : null;
