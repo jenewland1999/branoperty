@@ -13,7 +13,7 @@ import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths; 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +75,7 @@ public class Main extends Application {
 
         for (int i = 0; i < 15; i++) {
             for (int ii = 0; ii < 4; ii++) {
-                properties.add(new Property(branches.get(ii), "B: " + ii + " P: " + i, 0, 0L, 0L, ii % 2 == 0 ? Property.TYPES.HOUSE : Property.TYPES.FLAT));
+                properties.add(new Property(branches.get(ii), "B: " + ii + " P: " + i, 0, 0L, -1L, ii % 2 == 0 ? Property.TYPES.HOUSE : Property.TYPES.FLAT));
             }
         }
 
