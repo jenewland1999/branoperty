@@ -189,6 +189,8 @@ public class DashboardController {
                     super.updateItem(item, empty);
                     if (empty) {
                         setText(null);
+                    } else if (item == -1) {
+                        setText("-");
                     } else {
                         setText(numberFormat.format(item));
                     }
