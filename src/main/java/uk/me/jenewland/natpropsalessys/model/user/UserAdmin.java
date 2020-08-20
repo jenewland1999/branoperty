@@ -2,15 +2,24 @@ package uk.me.jenewland.natpropsalessys.model.user;
 
 import java.io.Serializable;
 
-public class UserAdmin extends User implements Serializable
-{
-    public UserAdmin()
-    {
+/**
+ * Serializable model class to represent estate agency admin users.
+ */
+public class UserAdmin extends User implements Serializable {
+    /**
+     * Default empty constructor.
+     */
+    public UserAdmin() {
         super("", "");
     }
 
-    public UserAdmin(String username, String password)
-    {
+    /**
+     * UserAdmin constructor.
+     *
+     * @param username the user's username.
+     * @param password the user's password.
+     */
+    public UserAdmin(String username, String password) {
         super(username, password);
     }
 }
