@@ -1,10 +1,11 @@
-package uk.me.jenewland.natpropsalessys.model;
+package uk.me.jenewland.natpropsalessys.models;
 
-import uk.me.jenewland.natpropsalessys.model.property.Property;
-import uk.me.jenewland.natpropsalessys.model.user.UserSecretary;
+import uk.me.jenewland.natpropsalessys.models.property.Property;
+import uk.me.jenewland.natpropsalessys.models.user.UserSecretary;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Set;
 public class Branch implements Serializable, IModel {
     private String name = "";
     private String address = "";
-    private String email = "";
     private String website = "";
+    private String email = "";
     private String tel = "";
     private UserSecretary branchSecretary = new UserSecretary();
     // Use Set as apposed to List because properties should be unique!
@@ -28,19 +29,18 @@ public class Branch implements Serializable, IModel {
 
     /**
      * Branch constructor.
-     *
-     * @param name     the name of the branch (doubles as username for secretary).
+     *  @param name     the name of the branch (doubles as username for secretary).
      * @param password the branch secretary's password.
      * @param address  the address of the branch.
-     * @param email    the email address associated with the branch.
      * @param website  the web address associated with the branch.
+     * @param email    the email address associated with the branch.
      * @param tel      the telephone number associated with the branch.
      */
-    public Branch(String name, String password, String address, String email, String website, String tel) {
+    public Branch(String name, String password, String address, String website, String email, String tel) {
         this.name = name;
         this.address = address;
-        this.email = email;
         this.website = website;
+        this.email = email;
         this.tel = tel;
         this.branchSecretary.setUsername(name);
         this.branchSecretary.setPassword(password);
@@ -222,5 +222,47 @@ public class Branch implements Serializable, IModel {
     @Override
     public String toString() {
         return getName();
+    }
+
+    /**
+     * Override the {@code Object.equals()} method to allow for accurate object
+     * comparison.
+     *
+     * @param object the object to compare it to.
+     * @return true/false depending on if the two objects are equal.
+     */
+    @Override
+    public boolean equals(Object object) {
+        // First, check if the object is itself.
+        if (this == object) return true;
+
+        // Next, check if the object is null.
+        if (object == null) return false;
+
+        // Then, check if the object is of the same type.
+        if (!(object instanceof Branch)) return false;
+
+        // The objects are of the same type so cast the provided object for
+        // deeper comparison (field comparisons).
+        Branch branch = (Branch) object;
+
+        // Finally, return the result of objects' field comparisons.
+        // NB: The comparison disregards the branch field as it's not required.
+        return Objects.equals(name, branch.name)
+                && Objects.equals(address, branch.address)
+                && Objects.equals(website, branch.website)
+                && Objects.equals(email, branch.email)
+                && Objects.equals(tel, branch.tel);
+    }
+
+    /**
+     * Override the {@code Object.hashCode()} method which is used for object
+     * comparisons. It does this by hashing the object's fields.
+     *
+     * @return an integer-based hash.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, address, website, email, tel);
     }
 }

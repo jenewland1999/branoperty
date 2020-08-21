@@ -1,6 +1,6 @@
 package uk.me.jenewland.natpropsalessys.utils;
 
-import uk.me.jenewland.natpropsalessys.model.IModel;
+import uk.me.jenewland.natpropsalessys.models.IModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,8 +94,7 @@ public class DataManager {
      * @param model the model to find and delete.
      */
     public void delete(IModel model) {
-        File dir = Paths.get(PATH.toString()).toFile();
-        File[] files = dir.listFiles();
+        File[] files = PATH.toFile().listFiles();
 
         if (files == null) {
             return;

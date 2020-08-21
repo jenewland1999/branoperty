@@ -1,7 +1,7 @@
-package uk.me.jenewland.natpropsalessys.model.property;
+package uk.me.jenewland.natpropsalessys.models.property;
 
-import uk.me.jenewland.natpropsalessys.model.Branch;
-import uk.me.jenewland.natpropsalessys.model.IModel;
+import uk.me.jenewland.natpropsalessys.models.Branch;
+import uk.me.jenewland.natpropsalessys.models.IModel;
 
 import java.io.Serializable;
 import java.util.Objects;

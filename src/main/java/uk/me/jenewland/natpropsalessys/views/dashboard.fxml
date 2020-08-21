@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -10,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.me.jenewland.natpropsalessys.controller.DashboardController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.me.jenewland.natpropsalessys.controllers.DashboardController">
     <children>
         <TabPane fx:id="tabPaneDashboard" prefHeight="768.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -30,7 +32,7 @@
                                 </Text>
                                 <Button fx:id="btnLogout1" layoutX="953.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" />
                                 <Button fx:id="btnBranchEdit" layoutX="826.0" layoutY="551.0" mnemonicParsing="false" onAction="#updateBranch" text="Edit Branch" />
-                                <TextField fx:id="tfBranchSearch" layoutX="786.0" layoutY="158.0" onAction="#searchBranches" onKeyTyped="#searchBranches" />
+                                <TextField fx:id="tfBranchSearch" layoutX="761.0" layoutY="158.0" onAction="#searchBranches" onKeyTyped="#searchBranches" prefWidth="186.0" promptText="Search by address/name..." />
                                 <Button fx:id="btnBranchSearch" layoutX="953.0" layoutY="158.0" mnemonicParsing="false" onAction="#searchBranches" text="Search" />
                                 <TableView fx:id="tableViewBranch" layoutX="14.0" layoutY="194.0" prefHeight="348.0" prefWidth="997.0">
                                     <columns>
@@ -47,6 +49,7 @@
                                 <Button fx:id="btnBranchCreate" layoutX="14.0" layoutY="158.0" mnemonicParsing="false" onAction="#createBranch" text="Create Branch" />
                                 <Button fx:id="btnBranchDelete" layoutX="915.0" layoutY="551.0" mnemonicParsing="false" onAction="#deleteBranch" text="Delete Branch" />
                         <Button fx:id="btnBranchView" layoutX="16.0" layoutY="551.0" mnemonicParsing="false" onAction="#viewBranch" text="View Branch" />
+                        <Label layoutX="761.0" layoutY="141.0" text="Search" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -57,7 +60,7 @@
                             <children>
                                 <TableView fx:id="tableViewProperty" layoutX="14.0" layoutY="194.0" prefHeight="348.0" prefWidth="997.0">
                                     <columns>
-                                        <TableColumn fx:id="tabColPropertyBranch" editable="false" prefWidth="136.0" text="Branch" />
+                                        <TableColumn fx:id="tabColPropertyBranch" editable="false" prefWidth="136.0" text="Associated Branch" />
                                         <TableColumn fx:id="tabColPropertyAddress" editable="false" prefWidth="136.0" text="Address" />
                                         <TableColumn fx:id="tabColPropertyRooms" editable="false" prefWidth="113.0" text="Rooms" />
                                         <TableColumn fx:id="tabColPropertySellPrice" editable="false" minWidth="0.0" prefWidth="113.0" text="Selling Price" />
@@ -68,7 +71,7 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </TableView>
-                                <TextField fx:id="tfPropertySearch" layoutX="786.0" layoutY="158.0" onAction="#searchProperties" onKeyTyped="#searchProperties" />
+                                <TextField fx:id="tfPropertySearch" layoutX="761.0" layoutY="158.0" onAction="#searchProperties" onKeyTyped="#searchProperties" prefHeight="27.0" prefWidth="186.0" promptText="Search by address/branch..." />
                                 <Button fx:id="btnPropertySearch" layoutX="953.0" layoutY="158.0" mnemonicParsing="false" onAction="#searchProperties" text="Search" />
                                 <Button fx:id="btnPropertyEdit" layoutX="810.0" layoutY="551.0" mnemonicParsing="false" onAction="#updateProperty" text="Edit Property" />
                                 <Button layoutX="907.0" layoutY="551.0" mnemonicParsing="false" onAction="#deleteProperty" text="Delete Property" />
@@ -85,6 +88,11 @@
                                 </Text>
                                 <Button fx:id="btnLogout2" layoutX="953.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" />
                         <Button fx:id="btnPropertyView" layoutX="15.0" layoutY="551.0" mnemonicParsing="false" onAction="#viewProperty" text="View Property" />
+                        <ChoiceBox fx:id="cbType" layoutX="443.0" layoutY="158.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="cbStatus" layoutX="602.0" layoutY="158.0" prefWidth="150.0" />
+                        <Label layoutX="443.0" layoutY="141.0" text="Type" />
+                        <Label layoutX="602.0" layoutY="141.0" text="Status" />
+                        <Label layoutX="761.0" layoutY="141.0" text="Search" />
                             </children>
                         </AnchorPane>
                     </content>

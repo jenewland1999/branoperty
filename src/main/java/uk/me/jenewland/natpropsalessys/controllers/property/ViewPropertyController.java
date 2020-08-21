@@ -1,14 +1,12 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.controllers.property;
 
-import javafx.beans.InvalidationListener;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.model.property.Property;
-import uk.me.jenewland.natpropsalessys.model.property.PropertyFlat;
-import uk.me.jenewland.natpropsalessys.model.property.PropertyHouse;
+import uk.me.jenewland.natpropsalessys.controllers.DashboardController;
+import uk.me.jenewland.natpropsalessys.models.property.Property;
+import uk.me.jenewland.natpropsalessys.models.property.PropertyFlat;
+import uk.me.jenewland.natpropsalessys.models.property.PropertyHouse;
 
 import java.text.NumberFormat;
 import java.util.*;
@@ -44,9 +42,9 @@ public class ViewPropertyController {
         tfBranch.setText(property.getBranch().getName());
         taAddress.setText(property.getAddress());
         tfNoOfRooms.setText(String.valueOf(property.getNoOfRooms()));
-        tfSellingPrice.setText(numberFormat.format(property.getSellingPrice()));
+        tfSellingPrice.setText(numberFormat.format(((double) property.getSellingPrice() / 100)));
         tfSoldPrice.setText(
-                property.isSold() ? numberFormat.format(property.getSoldPrice()) : "-"
+                property.isSold() ? numberFormat.format(((double) property.getSoldPrice()) / 100) : "-"
         );
         cbType.getItems().add(property.getType());
         cbType.getSelectionModel().selectFirst();
@@ -72,7 +70,7 @@ public class ViewPropertyController {
             PropertyFlat flat = (PropertyFlat) property;
 
             tfFloorNo.setText(String.valueOf(flat.getFloorNo()));
-            tfMonthlyCharge.setText(numberFormat.format(flat.getMonthlyCharge()));
+            tfMonthlyCharge.setText(numberFormat.format(((double) flat.getMonthlyCharge()) / 100));
 
             tfNoOfFloors.setText("N/A");
             cbHasGarden.setVisible(false);
@@ -82,6 +80,5 @@ public class ViewPropertyController {
 
     public void close() {
         ((Stage) btnClose.getScene().getWindow()).close();
-        dashboardController.searchProperties();
     }
 }

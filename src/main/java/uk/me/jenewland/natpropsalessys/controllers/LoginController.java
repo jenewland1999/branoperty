@@ -1,13 +1,13 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import uk.me.jenewland.natpropsalessys.Main;
-import uk.me.jenewland.natpropsalessys.model.Branch;
-import uk.me.jenewland.natpropsalessys.model.IModel;
-import uk.me.jenewland.natpropsalessys.model.Session;
-import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
+import uk.me.jenewland.natpropsalessys.models.Branch;
+import uk.me.jenewland.natpropsalessys.models.IModel;
+import uk.me.jenewland.natpropsalessys.models.Session;
+import uk.me.jenewland.natpropsalessys.models.user.UserAdmin;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
 import java.io.IOException;
@@ -140,7 +140,7 @@ public class LoginController {
             );
 
             // Open the GUI and initialise the dashboard controller
-            FXMLLoader loader = openGui("./view/dashboard.fxml", title, false);
+            FXMLLoader loader = openGui("./views/dashboard.fxml", title, false);
             DashboardController controller = loader.getController();
             controller.setSession(session);
             controller.init();

@@ -1,6 +1,6 @@
-package uk.me.jenewland.natpropsalessys.model;
+package uk.me.jenewland.natpropsalessys.models;
 
-import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
+import uk.me.jenewland.natpropsalessys.models.user.UserAdmin;
 
 /**
  * Session class to store the currently logged in user and their data. Once

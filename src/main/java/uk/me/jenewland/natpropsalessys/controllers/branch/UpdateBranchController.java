@@ -1,4 +1,4 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.controllers.branch;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,14 +6,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.model.Branch;
+import uk.me.jenewland.natpropsalessys.controllers.DashboardController;
+import uk.me.jenewland.natpropsalessys.models.Branch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static uk.me.jenewland.natpropsalessys.Main.dataManager;
+import static uk.me.jenewland.natpropsalessys.Main.showInvalidFormAlert;
 
-public class CreateBranchController {
+public class UpdateBranchController {
     @FXML
     private TextField tfUsername, tfWebsite, tfEmail, tfTelNo;
 
@@ -27,12 +29,26 @@ public class CreateBranchController {
     private Button btnCancel, btnCreate;
 
     private DashboardController dashboardController;
+    private Branch branch;
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
     }
 
-    public void createBranch() {
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    public void populateFields() {
+        tfUsername.setText(branch.getName());
+        pfPassword.setText(branch.getBranchSecretary().getPassword());
+        taAddress.setText(branch.getAddress());
+        tfWebsite.setText(branch.getWebsite());
+        tfEmail.setText(branch.getEmail());
+        tfTelNo.setText(branch.getTel());
+    }
+
+    public void updateBranch() {
         List<String> errors = new ArrayList<>();
 
         if (tfUsername.getText().trim().length() <= 0) {
@@ -71,25 +87,28 @@ public class CreateBranchController {
             errors.add("Telephone No. cannot be empty");
         }
 
-        if (tfTelNo.getText().trim().length() > 10) {
+        if (tfTelNo.getText().trim().length() > 11) {
             errors.add("Telephone No. cannot exceed 10 digits");
         }
 
         if (errors.size() == 0) {
-            dataManager.create(new Branch(
+            Branch b = new Branch(
                     tfUsername.getText(),
                     pfPassword.getText(),
                     taAddress.getText(),
-                    tfEmail.getText(),
-                    tfWebsite.getText(),
+                    tfWebsite.getText(), tfEmail.getText(),
                     tfTelNo.getText()
-            ));
+            );
+            b.setProperties(branch.getProperties());
+            dataManager.update(branch, b);
             close();
+        } else {
+            showInvalidFormAlert(errors);
         }
     }
 
     public void close() {
         ((Stage) btnCancel.getScene().getWindow()).close();
-        dashboardController.searchBranches();
+        dashboardController.refresh();
     }
 }

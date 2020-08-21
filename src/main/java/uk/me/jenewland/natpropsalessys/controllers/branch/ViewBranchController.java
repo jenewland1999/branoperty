@@ -1,4 +1,4 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.controllers.branch;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,7 +6,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.model.Branch;
+import uk.me.jenewland.natpropsalessys.controllers.DashboardController;
+import uk.me.jenewland.natpropsalessys.models.Branch;
 
 public class ViewBranchController {
     @FXML
@@ -41,6 +42,5 @@ public class ViewBranchController {
 
     public void close() {
         ((Stage) btnClose.getScene().getWindow()).close();
-        dashboardController.searchBranches();
     }
 }

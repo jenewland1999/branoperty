@@ -1,4 +1,4 @@
-package uk.me.jenewland.natpropsalessys.controller;
+package uk.me.jenewland.natpropsalessys.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,20 +7,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import uk.me.jenewland.natpropsalessys.model.Branch;
-import uk.me.jenewland.natpropsalessys.model.IModel;
-import uk.me.jenewland.natpropsalessys.model.Session;
-import uk.me.jenewland.natpropsalessys.model.property.Property;
+import uk.me.jenewland.natpropsalessys.controllers.branch.CreateBranchController;
+import uk.me.jenewland.natpropsalessys.controllers.branch.UpdateBranchController;
+import uk.me.jenewland.natpropsalessys.controllers.branch.ViewBranchController;
+import uk.me.jenewland.natpropsalessys.controllers.property.CreatePropertyController;
+import uk.me.jenewland.natpropsalessys.controllers.property.UpdatePropertyController;
+import uk.me.jenewland.natpropsalessys.controllers.property.ViewPropertyController;
+import uk.me.jenewland.natpropsalessys.models.Branch;
+import uk.me.jenewland.natpropsalessys.models.IModel;
+import uk.me.jenewland.natpropsalessys.models.Session;
+import uk.me.jenewland.natpropsalessys.models.property.Property;
 
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static uk.me.jenewland.natpropsalessys.Main.dataManager;
-import static uk.me.jenewland.natpropsalessys.Main.openGui;
+import static uk.me.jenewland.natpropsalessys.Main.*;
 
 public class DashboardController {
     private Session session;
@@ -36,6 +42,12 @@ public class DashboardController {
 
     @FXML
     private TabPane tabPaneDashboard;
+
+    @FXML
+    private ChoiceBox<String> cbType;
+
+    @FXML
+    private ChoiceBox<String> cbStatus;
 
     @FXML
     private Text txtWelcomeMsg1, txtWelcomeMsg2;
@@ -90,7 +102,7 @@ public class DashboardController {
 
         // Open the login GUI
         openGui(
-                "./view/login.fxml",
+                "./views/login.fxml",
                 "National Property Sales System - Login",
                 600, 400, false
         );
@@ -113,6 +125,20 @@ public class DashboardController {
         }
 
         populateProperties();
+
+        // Populate filtering dropdowns
+        cbStatus.getItems().addAll("All", "For Sale", "Sold"); // Status'
+        cbStatus.getSelectionModel().selectFirst();
+        cbType.getItems().addAll("All", "Flats", "Houses"); // Property Types
+        cbType.getSelectionModel().selectFirst();
+
+        cbStatus.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            populateProperties(tfPropertySearch.getText(), getType(), getStatus(newValue));
+        });
+
+        cbType.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            populateProperties(tfPropertySearch.getText(), getType(newValue), getStatus());
+        });
     }
 
     private void populateProperties() {
@@ -120,6 +146,8 @@ public class DashboardController {
     }
 
     private void populateProperties(String query, Property.TYPES type, long soldPrice) {
+        logger.log(Level.INFO, String.format("Searching for %s... (Type: %s, Sold Price: %s)", query, type, soldPrice));
+
         // Clear the table before populating it (refresh functionality)
         tableViewProperty.getItems().clear();
 
@@ -170,7 +198,7 @@ public class DashboardController {
         if (soldPrice >= 0) {
             properties = properties
                     .stream()
-                    .filter(row -> row.getSoldPrice() == soldPrice)
+                    .filter(row -> row.getSoldPrice() >= 0)
                     .collect(Collectors.toList());
         }
 
@@ -178,37 +206,82 @@ public class DashboardController {
 
         tableViewProperty.setItems(rows);
         tableViewProperty.setEditable(false);
+        tableViewProperty.getSortOrder().add(tabColPropertyBranch);
 
-        List<TableColumn<Property, Long>> cols = new ArrayList<>();
-        cols.add(tabColPropertySellPrice);
-        cols.add(tabColPropertySoldPrice);
-        cols.forEach(col -> {
-            col.setCellFactory(c -> new TableCell<>() {
-                @Override
-                protected void updateItem(Long item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setText(null);
-                    } else if (item == -1) {
-                        setText("-");
-                    } else {
-                        setText(numberFormat.format(item));
-                    }
+        tabColPropertySellPrice.setCellFactory(c -> new TableCell<>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(numberFormat.format(((double) item) / 100));
                 }
-            });
+            }
+        });
+
+        tabColPropertySoldPrice.setCellFactory(c -> new TableCell<>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else if (item == -1) {
+                    setText("For Sale");
+                } else {
+                    setText("Sold - " + numberFormat.format(((double) item) / 100));
+                }
+            }
         });
     }
 
+    private int getStatus(String newValue) {
+        String selected = newValue.isEmpty() ? cbStatus.getValue() : newValue;
+
+        if (selected.equalsIgnoreCase("for sale")) {
+            return -1;
+        } else if (selected.equalsIgnoreCase("sold")) {
+            return 0;
+        }
+
+        return -2;
+    }
+
+    private int getStatus() {
+        return getStatus("");
+    }
+
+    private Property.TYPES getType(String newValue) {
+        String selected = newValue.isEmpty() ? cbType.getValue() : newValue;
+
+        if (selected.equalsIgnoreCase("house")) {
+            return Property.TYPES.HOUSE;
+        } else if (selected.equalsIgnoreCase("flats")) {
+            return Property.TYPES.FLAT;
+        }
+
+        return Property.TYPES.NULL;
+    }
+
+    private Property.TYPES getType() {
+        return getType("");
+    }
+
     public void searchProperties() {
-        populateProperties(tfPropertySearch.getText(), Property.TYPES.NULL, -2);
+        populateProperties(tfPropertySearch.getText(), getType(), getStatus());
     }
 
     public void createProperty() throws IOException {
-        openGui(
+        FXMLLoader loader = openGui(
                 "./views/createProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Create Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"
-                ), true);
+                ), 800, 600, true);
+
+        CreatePropertyController controller = loader.getController();
+        controller.setDashboardController(this);
+        controller.setSession(session);
+        controller.populateFields();
     }
 
     public void viewProperty() throws IOException {
@@ -218,7 +291,7 @@ public class DashboardController {
         }
 
         FXMLLoader loader = openGui(
-                "./view/viewProperty.fxml",
+                "./views/viewProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - View Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"),
                 800,
@@ -237,11 +310,17 @@ public class DashboardController {
             return;
         }
 
-        openGui(
+        FXMLLoader loader = openGui(
                 "./views/updateProperty.fxml",
                 String.format("National Property Sales System - %s Dashboard - Update Property",
                         getSession().isAdmin() ? "Admin" : "Secretary"
-                ), true);
+                ), 800, 600, true);
+
+        UpdatePropertyController controller = loader.getController();
+        controller.setDashboardController(this);
+        controller.setSession(session);
+        controller.setProperty(tableViewProperty.getSelectionModel().getSelectedItem());
+        controller.populateFields();
     }
 
     public void deleteProperty() {
@@ -261,7 +340,7 @@ public class DashboardController {
         alert.setContentText("Are you sure you want to delete " + selectedProperty.getAddress() + "?");
         alert.getButtonTypes().setAll(btnYes, btnNo);
 
-        if (alert.showAndWait().isPresent() && alert.showAndWait().get() == btnYes) {
+        if (alert.showAndWait().orElse(null) == btnYes) {
             // If user is not an admin...
             if (!getSession().isAdmin()) {
                 // Remove the branch from the session
@@ -315,7 +394,6 @@ public class DashboardController {
                 rows.add(branch);
             } else {
                 // Search by name or address
-                // TODO: Improve search so you can specify which field you want to search by
                 if (branch.getName().toLowerCase().contains(query.trim().toLowerCase()) ||
                         branch.getAddress().toLowerCase().contains(query.trim().toLowerCase())) {
                     rows.add(branch);
@@ -338,8 +416,6 @@ public class DashboardController {
                 }
             }
         });
-
-        // TODO: Format phone number column (Ask Chris/Nick for RegEx solution)
     }
 
     public void searchBranches() {
@@ -353,7 +429,7 @@ public class DashboardController {
         }
 
         FXMLLoader loader = openGui(
-                "./view/viewBranch.fxml",
+                "./views/viewBranch.fxml",
                 "National Property Sales System - Admin Dashboard - View Branch",
                 400,
                 600,
@@ -367,7 +443,7 @@ public class DashboardController {
 
     public void createBranch() throws IOException {
         FXMLLoader loader = openGui(
-                "./view/createBranch.fxml",
+                "./views/createBranch.fxml",
                 "National Property Sales System - Admin Dashboard - Create Branch",
                 400,
                 600,
@@ -384,7 +460,7 @@ public class DashboardController {
         }
 
         FXMLLoader loader = openGui(
-                "./view/updateBranch.fxml",
+                "./views/updateBranch.fxml",
                 "National Property Sales System - Admin Dashboard - Update Branch",
                 400,
                 600,
@@ -415,7 +491,7 @@ public class DashboardController {
         alert.setContentText("Are you sure you want to delete " + selectedBranch.getName() + "?");
         alert.getButtonTypes().setAll(btnYes, btnNo);
 
-        if (alert.showAndWait().isPresent() && alert.showAndWait().get() == btnYes) {
+        if (alert.showAndWait().orElse(null) == btnYes) {
             dataManager.delete(selectedBranch);
             populateBranches();
         }
@@ -424,7 +500,9 @@ public class DashboardController {
     public void refresh() {
         if (getSession() != null) {
             populateProperties();
-            populateBranches();
+            if (getSession().isAdmin()) {
+                populateBranches();
+            }
         }
     }
 

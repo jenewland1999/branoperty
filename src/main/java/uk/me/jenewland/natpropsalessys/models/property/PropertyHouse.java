@@ -1,6 +1,6 @@
-package uk.me.jenewland.natpropsalessys.model.property;
+package uk.me.jenewland.natpropsalessys.models.property;
 
-import uk.me.jenewland.natpropsalessys.model.Branch;
+import uk.me.jenewland.natpropsalessys.models.Branch;
 
 import java.io.Serializable;
 
@@ -21,8 +21,7 @@ public class PropertyHouse extends Property implements Serializable {
 
     /**
      * PropertyHouse constructor.
-     *
-     * @param branch       the associated branch.
+     *  @param branch       the associated branch.
      * @param address      the property's address.
      * @param noOfRooms    the number of rooms the property has.
      * @param sellingPrice the price the house is being marketed at.
@@ -32,8 +31,8 @@ public class PropertyHouse extends Property implements Serializable {
      * @param hasGarage    whether or not the property has a garage.
      * @param hasGarden    whether or not the property has a garden.w
      */
-    public PropertyHouse(Branch branch, String address, int noOfRooms, int sellingPrice, int soldPrice, TYPES type, int noOfFloors, boolean hasGarage, boolean hasGarden) {
-        super(branch, address, noOfRooms, sellingPrice, soldPrice, type);
+    public PropertyHouse(Branch branch, String address, int noOfRooms, long sellingPrice, long soldPrice, int noOfFloors, boolean hasGarage, boolean hasGarden) {
+        super(branch, address, noOfRooms, sellingPrice, soldPrice, TYPES.HOUSE);
         this.noOfFloors = noOfFloors;
         this.hasGarage = hasGarage;
         this.hasGarden = hasGarden;

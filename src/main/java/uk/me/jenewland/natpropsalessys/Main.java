@@ -3,11 +3,12 @@ package uk.me.jenewland.natpropsalessys;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import uk.me.jenewland.natpropsalessys.model.Branch;
-import uk.me.jenewland.natpropsalessys.model.property.Property;
-import uk.me.jenewland.natpropsalessys.model.user.UserAdmin;
+import uk.me.jenewland.natpropsalessys.models.user.UserAdmin;
 import uk.me.jenewland.natpropsalessys.utils.DataManager;
 import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 
@@ -44,7 +45,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("National Property Sales System - Login");
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("view/login.fxml")), 600, 400));
+        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("views/login.fxml")), 600, 400));
         primaryStage.setResizable(false);
         primaryStage.show();
 
@@ -52,7 +53,7 @@ public class Main extends Application {
         // ===================
         // Used in development to generate admin.dat file that stores the default admin
         // account details for the application.
-        // NatPropSalesSys.generateAdminFile();
+        setAdminFile();
     }
 
     // Main method - runs when the JVM is started
@@ -63,30 +64,8 @@ public class Main extends Application {
         // Instantiate the data controller for the app
         dataManager = new DataManager("branches");
 
-        // Seed data (for demo purposes)
-        List<Branch> branches = new ArrayList<>();
-
-        branches.add(new Branch("weymouth", "password", "Weymouth, Dorset, GB", "weymouth@domain.tld", "domain.tld/branches/weymouth", "07700900461"));
-        branches.add(new Branch("dorchester", "password", "Dorchester, Dorset, GB", "dorchester@domain.tld", "domain.tld/branches/dorchester", "07700900461"));
-        branches.add(new Branch("poole", "password", "Poole, Dorset, GB", "poole@domain.tld", "domain.tld/branches/poole", "07700900461"));
-        branches.add(new Branch("bournemouth", "password", "Bournemouth, Dorset, GB", "bournemouth@domain.tld", "domain.tld/branches/bournemouth", "07700900461"));
-
-        List<Property> properties = new ArrayList<>();
-
-        for (int i = 0; i < 15; i++) {
-            for (int ii = 0; ii < 4; ii++) {
-                properties.add(new Property(branches.get(ii), "B: " + ii + " P: " + i, 0, 0L, -1L, ii % 2 == 0 ? Property.TYPES.HOUSE : Property.TYPES.FLAT));
-            }
-        }
-
-        for (Branch b : branches) {
-            for (Property p : properties) {
-                if (p.getBranch() == b) {
-                    b.addProperty(p);
-                }
-            }
-            dataManager.create(b);
-        }
+        // Seed data for demo purposes
+        new Seed();
 
         // Launch the application
         launch(args);
@@ -146,5 +125,36 @@ public class Main extends Application {
         stage.show();
 
         return loader;
+    }
+
+    /**
+     * Generate an alert for failed form submissions that accepts a list of the
+     * errors to show to the user.
+     *
+     * @param errors the list of issues with the form.
+     */
+    public static void showInvalidFormAlert(List<String> errors) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        ButtonType btnOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        errors.forEach(error -> {
+            stringBuilder.append(String.format("\t- %s%n", error));
+        });
+
+        alert.setTitle("Invalid Form Submission");
+        alert.setHeaderText("Whoops! There appear to be some problems with your form.");
+        alert.setContentText(String.format(
+                "Please correct the following issue and re-attempt form submission: %n%n%s",
+                stringBuilder.toString()
+        ));
+        alert.getButtonTypes().setAll(btnOk);
+        alert.showAndWait();
+    }
+
+    public static void showInvalidFormAlert(String error) {
+        List<String> errors = new ArrayList<>();
+        errors.add(error);
+        showInvalidFormAlert(errors);
     }
 }

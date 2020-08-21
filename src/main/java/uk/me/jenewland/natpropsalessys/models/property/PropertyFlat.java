@@ -1,6 +1,6 @@
-package uk.me.jenewland.natpropsalessys.model.property;
+package uk.me.jenewland.natpropsalessys.models.property;
 
-import uk.me.jenewland.natpropsalessys.model.Branch;
+import uk.me.jenewland.natpropsalessys.models.Branch;
 
 import java.io.Serializable;
 
@@ -20,7 +20,6 @@ public class PropertyFlat extends Property implements Serializable {
 
     /**
      * PropertyFlat constructor.
-     *
      * @param branch        the associated branch.
      * @param address       the property's address.
      * @param noOfRooms     the number of rooms the property has.
@@ -30,8 +29,8 @@ public class PropertyFlat extends Property implements Serializable {
      * @param floorNo       the floor in which the flat is situated on. E.g. 0 for ground floor.
      * @param monthlyCharge the monthly charge associated with the flat.
      */
-    public PropertyFlat(Branch branch, String address, int noOfRooms, int sellingPrice, int soldPrice, TYPES type, int floorNo, int monthlyCharge) {
-        super(branch, address, noOfRooms, sellingPrice, soldPrice, type);
+    public PropertyFlat(Branch branch, String address, int noOfRooms, long sellingPrice, long soldPrice, int floorNo, int monthlyCharge) {
+        super(branch, address, noOfRooms, sellingPrice, soldPrice, TYPES.FLAT);
         this.floorNo = floorNo;
         this.monthlyCharge = monthlyCharge;
     }
