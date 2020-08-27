@@ -208,6 +208,18 @@ public class DashboardController {
         tableViewProperty.setEditable(false);
         tableViewProperty.getSortOrder().add(tabColPropertyBranch);
 
+        tabColPropertyBranch.setCellFactory(c -> new TableCell<>() {
+            @Override
+            protected void updateItem(Branch item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item.getName().substring(0, 1).toUpperCase() + item.getName().substring(1));
+                }
+            }
+        });
+
         tabColPropertySellPrice.setCellFactory(c -> new TableCell<>() {
             @Override
             protected void updateItem(Long item, boolean empty) {
