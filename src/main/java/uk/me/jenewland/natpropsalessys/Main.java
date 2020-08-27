@@ -15,8 +15,7 @@ import uk.me.jenewland.natpropsalessys.utils.FileHandler;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -133,12 +132,12 @@ public class Main extends Application {
      *
      * @param errors the list of issues with the form.
      */
-    public static void showInvalidFormAlert(List<String> errors) {
+    public static void showInvalidFormAlert(String... errors) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         ButtonType btnOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
 
         StringBuilder stringBuilder = new StringBuilder();
-        errors.forEach(error -> {
+        Arrays.asList(errors).forEach(error -> {
             stringBuilder.append(String.format("\t- %s%n", error));
         });
 
@@ -150,11 +149,5 @@ public class Main extends Application {
         ));
         alert.getButtonTypes().setAll(btnOk);
         alert.showAndWait();
-    }
-
-    public static void showInvalidFormAlert(String error) {
-        List<String> errors = new ArrayList<>();
-        errors.add(error);
-        showInvalidFormAlert(errors);
     }
 }

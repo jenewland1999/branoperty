@@ -103,7 +103,7 @@ public class UpdateBranchController {
             dataManager.update(branch, b);
             close();
         } else {
-            showInvalidFormAlert(errors);
+            showInvalidFormAlert(errors.toArray(new String[0]));
         }
     }
 

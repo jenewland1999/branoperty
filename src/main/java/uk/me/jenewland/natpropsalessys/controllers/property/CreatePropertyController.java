@@ -132,7 +132,7 @@ public class CreatePropertyController {
                         Integer.parseInt(tfMonthlyCharge.getText())
                 );
             } else {
-                showInvalidFormAlert(errors);
+                showInvalidFormAlert(errors.toArray(new String[0]));
             }
 
         } else if (cbType.getSelectionModel().getSelectedItem() == Property.TYPES.HOUSE) {
@@ -152,7 +152,7 @@ public class CreatePropertyController {
                         cbHasGarden.isSelected()
                 );
             } else {
-                showInvalidFormAlert(errors);
+                showInvalidFormAlert(errors.toArray(new String[0]));
             }
         }
 
