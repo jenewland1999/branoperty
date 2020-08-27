@@ -65,10 +65,6 @@ public class UpdatePropertyController {
             cbBranch.getItems().add(session.getBranch());
             cbBranch.getSelectionModel().selectFirst();
         }
-
-        cbType.getItems().add(Property.TYPES.FLAT);
-        cbType.getItems().add(Property.TYPES.HOUSE);
-
         cbBranch.getSelectionModel().select(property.getBranch());
         taAddress.setText(property.getAddress());
         tfNoOfRooms.setText(String.valueOf(property.getNoOfRooms()));
