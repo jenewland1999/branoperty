@@ -95,7 +95,7 @@ public class Main extends Application {
      * @param title    the window title to be displayed.
      * @param isModal  whether or not to display the window as a modal.
      * @return returns the {@code FXMLLoader} instance for the newly opened gui.
-     * @throws IOException
+     * @throws IOException if getResource fails.
      */
     public static FXMLLoader openGui(String viewPath, String title, boolean isModal) throws IOException {
         return openGui(viewPath, title, 1024, 768, isModal);
@@ -111,7 +111,7 @@ public class Main extends Application {
      * @param height   the height (px) of the window.
      * @param isModal  whether or not to display the window as a modal.
      * @return returns the {@code FXMLLoader} instance for the newly opened gui.
-     * @throws IOException
+     * @throws IOException if getResource fails.
      */
     public static FXMLLoader openGui(String viewPath, String title, double width, double height, boolean isModal) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(viewPath));
