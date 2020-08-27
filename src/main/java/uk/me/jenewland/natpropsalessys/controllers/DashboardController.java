@@ -254,7 +254,7 @@ public class DashboardController {
     private Property.TYPES getType(String newValue) {
         String selected = newValue.isEmpty() ? cbType.getValue() : newValue;
 
-        if (selected.equalsIgnoreCase("house")) {
+        if (selected.equalsIgnoreCase("houses")) {
             return Property.TYPES.HOUSE;
         } else if (selected.equalsIgnoreCase("flats")) {
             return Property.TYPES.FLAT;
