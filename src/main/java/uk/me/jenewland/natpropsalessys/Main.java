@@ -53,7 +53,7 @@ public class Main extends Application {
         // ===================
         // Used in development to generate admin.dat file that stores the default admin
         // account details for the application.
-        setAdminFile();
+        // setAdminFile();
     }
 
     // Main method - runs when the JVM is started
