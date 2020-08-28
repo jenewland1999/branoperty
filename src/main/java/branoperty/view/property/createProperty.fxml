@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="branoperty.controller.property.CreateProperty">
+   <children>
+      <Text layoutX="281.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Property" textAlignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Label fx:id="lblBranch" layoutX="56.0" layoutY="112.0" text="Associated Branch" />
+      <Label fx:id="lblPassword" layoutX="56.0" layoutY="478.0" text="Type" />
+      <Label fx:id="lblAddress" layoutX="56.0" layoutY="173.0" text="Address" />
+      <TextArea fx:id="taAddress" layoutX="56.0" layoutY="190.0" prefHeight="96.0" prefWidth="288.0" promptText="e.g. 10 Gold Road, Northampton, Northamptonshire, GB." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextArea>
+      <Label fx:id="lblWebsite" layoutX="56.0" layoutY="296.0" text="Number of Rooms" />
+      <TextField fx:id="tfNoOfRooms" layoutX="56.0" layoutY="313.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. 3">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label fx:id="lblEmail" layoutX="56.0" layoutY="356.0" text="Selling Price" />
+      <TextField fx:id="tfSellingPrice" layoutX="56.0" layoutY="373.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. £250,000.00">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label fx:id="lblTelNo" layoutX="56.0" layoutY="416.0" text="Sold Price" />
+      <TextField fx:id="tfSoldPrice" layoutX="56.0" layoutY="433.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. £250,000.00">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ButtonBar layoutY="552.0" prefHeight="48.0" prefWidth="800.0">
+         <buttons>
+            <Button fx:id="btnClose" cancelButton="true" mnemonicParsing="false" onAction="#close" text="Close" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCreate" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#createProperty" text="Create" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </buttons>
+         <padding>
+            <Insets right="8.0" />
+         </padding>
+      </ButtonBar>
+      <ChoiceBox fx:id="cbType" layoutX="56.0" layoutY="495.0" prefHeight="32.0" prefWidth="288.0" />
+      <Separator layoutX="397.0" layoutY="112.0" orientation="VERTICAL" prefHeight="420.0" prefWidth="4.0" />
+      <Label fx:id="lblUsername1" layoutX="454.0" layoutY="112.0" text="Floor Number" />
+      <TextField fx:id="tfFloorNo" layoutX="454.0" layoutY="129.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. 12">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label fx:id="lblUsername11" layoutX="454.0" layoutY="173.0" text="Monthly Charge" />
+      <TextField fx:id="tfMonthlyCharge" layoutX="454.0" layoutY="190.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. £250.50">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Separator layoutX="498.0" layoutY="262.0" prefWidth="200.0" />
+      <Label fx:id="lblUsername12" layoutX="454.0" layoutY="293.0" text="Number of Floors" />
+      <TextField fx:id="tfNoOfFloors" layoutX="454.0" layoutY="310.0" prefHeight="32.0" prefWidth="288.0" promptText="e.g. 12">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="cbHasGarage" layoutX="482.0" layoutY="379.0" mnemonicParsing="false" text="Has Garage" />
+      <CheckBox fx:id="cbHasGarden" layoutX="626.0" layoutY="379.0" mnemonicParsing="false" text="Has Garden" />
+      <ChoiceBox fx:id="cbBranch" layoutX="56.0" layoutY="129.0" prefHeight="32.0" prefWidth="288.0" />
+   </children>
+</AnchorPane>
