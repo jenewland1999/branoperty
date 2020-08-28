@@ -1,6 +1,6 @@
 # CSY2028 Systems Design & Development - Assignment 02 (Branoperty)
 
-Branoperty is a small, lightweight and open-source application designed for estate agencies. It provides comprehensive branch and property management system.
+Branoperty is a small, lightweight and open-source application designed for estate agencies. It provides a comprehensive branch and property management system.
 
 Branoperty - an amalgamation of the word **branch** and **property**. _Clever, I know!_
 
